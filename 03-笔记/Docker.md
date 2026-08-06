@@ -38,13 +38,7 @@ Docker 利用 Linux 的 **namespace（命名空间）** 技术提供隔离的工
 
 ### Docker为什么会出现
 
-一款产品，开发和上线两套环境，应用环境配置费时费力，而且容易出问题
-
-尤其对于机器学习和深度学习的库更是如此，很可能存在版本问题、底层依赖冲突问题
-
-所以发布项目时，不只是一套代码过去，而是代码+环境整体打包过去
-
-所谓开发即运维，保证系统稳定性，提高部署效率
+一款产品，开发和上线两套环境，应用环境配置费时费力，而且容易出问题。尤其对于机器学习和深度学习的库更是如此，很可能存在版本问题、底层依赖冲突问题。所以发布项目时，不只是一套代码过去，而是代码+环境整体打包过去。所谓开发即运维，保证系统稳定性，提高部署效率
 
 使用Docker后的流程：
 
@@ -93,7 +87,7 @@ Docker通过隔离机制，可以将服务器利用到极致。
 
 ### Docker的基本组成
 
-![image-20200606212250845](Docker.assets/image-20200606212250845.png)
+![image-20260807062842206](images/image-20260807062842206.png)
 
 明确几个概念：
 
@@ -124,13 +118,13 @@ VMware配置虚拟机 https://blog.csdn.net/babyxue/article/details/80970526
 xshell链接服务器 https://blog.csdn.net/zzy1078689276/article/details/77280814
 
 ```
-[root@192 ~]# cd /
-[root@192 /]# pwd
-/
-[root@192 /]# ls
-bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-[root@192 /]# uname -r
-3.10.0-1127.el7.x86_64
+[root@YMP ~]# cd /
+[root@YMP /]# ls /
+bin  boot  data  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@YMP /]# uname -r
+3.10.0-1160.119.1.el7.x86_64
+[root@YMP /]# sudo hostnamectl set-hostname centos7
+
 ```
 
 ![image-20200608091950655](Docker.assets/image-20200608091950655.png)
