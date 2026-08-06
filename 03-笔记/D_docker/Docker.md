@@ -296,77 +296,18 @@ docker images
 
 ### 卸载Docker
 
-```
+```bash
 # 卸载依赖
 yum remove docker-ce docker-ce-cli containerd.io
 
 # 删除资源
-rm -rf /var/lib/docker # docker 的默认工作路径
-
+# docker 的默认工作路径
+rm -rf /var/lib/docker 
 ```
 
-### 阿里云镜像加速
-
-支付宝扫码登录，短信验证，确认授权
-
-我有两个问题
-1. 阿里云镜像加速必须配置嘛？
-
-   >哎呦我去: 加速快
-   >
-   >哎呦我去: 要是翻墙就无所谓了
-
-2. 这个阿里云必须要买嘛，买哪个，我看阿里云好多产品
-
-   >哎呦我去:不需要买
-   >
-   >哎呦我去:免费的
-   >
-   >哎呦我去:阿里云搜索容器服务
-   >
-   >哎呦我去:有一个镜像加速
-
-   
-
-3. 这个地址是哪来的呀
-
-操作
-
-![image-20200616154429105](Docker.assets/image-20200616154429105.png)
-
-![image-20200616154455964](Docker.assets/image-20200616154455964.png)
-
-控制台搜索 容器镜像服务
-
-![image-20200616155201285](Docker.assets/image-20200616155201285.png)
 
 
 
-找到加速地址
-
-![image-20200616155649476](Docker.assets/image-20200616155649476.png)
-
-```
-sudo mkdir -p /etc/docker # 创建一个陌路
-sudo tee /etc/docker/daemon.json <<-'EOF'
-{
-  "registry-mirrors": ["https://uyfgafsw.mirror.aliyuncs.com"]
-}
-EOF # 编写配置文件
-
-sudo systemctl daemon-reload # 重启服务
-sudo systemctl restart docker # 重启docker
-```
-
-![image-20200616160315298](Docker.assets/image-20200616160315298.png)
-
-
-
-[在线画图软件ProcessOn](https://www.processon.com/)
-
-
-
-[服务器及购买相关介绍](https://www.bilibili.com/video/BV177411K7bH)
 
 ## 底层原理
 
