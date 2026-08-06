@@ -216,52 +216,71 @@ yum install docker-ce docker-ce-cli containerd.io
 
 ### 启动Docker
 
-```
-systemctl start docker # 代表启动成功
-```
+```shell
+# 启动Docker
+systemctl start docker
 
-```
+# 查询docker版本
 docker version
-```
 
-```
-Client: Docker Engine - Community
- Version:           19.03.11
- API version:       1.40
- Go version:        go1.13.10
- Git commit:        42e35e61f3
- Built:             Mon Jun  1 09:13:48 2020
- OS/Arch:           linux/amd64
- Experimental:      false
-
-Server: Docker Engine - Community
- Engine:
-  Version:          19.03.11
-  API version:      1.40 (minimum version 1.12)
-  Go version:       go1.13.10
-  Git commit:       42e35e61f3
-  Built:            Mon Jun  1 09:12:26 2020
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.2.13
-  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429
- runc:
-  Version:          1.0.0-rc10
-  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
- docker-init:
-  Version:          0.18.0
-  GitCommit:        fec3683
-
-```
-
-```
+# 启动docker的helloworld进行测试
 docker run hello-world
 ```
 
-![image-20200616151641013](Docker.assets/image-20200616151641013.png)
+![image-20260807070459885](images/image-20260807070459885.png)
 
-中间一堆是签名信息
+#### 启动docker的时候可能会存在网络不稳定因素，因此可以配置国内镜像加速器
+
+### 配置镜像加速器（最推荐）
+
+通过使用国内的镜像源来替代官方源，能有效避免网络超时问题。
+
+1. **编辑（或创建）Docker 配置文件**
+   使用以下命令创建或编辑 `/etc/docker/daemon.json` 文件：
+
+   ```bash
+   sudo vi /etc/docker/daemon.json
+   ```
+
+2. **添加镜像加速器地址**
+   将以下内容复制到文件中。这里提供了几个常用的国内镜像源，你可以根据需要选择或全部使用。
+
+   ```bash
+   {
+     "registry-mirrors": [
+       "https://docker.m.daocloud.io",
+       "https://dockerproxy.com",
+       "https://docker.mirrors.ustc.edu.cn",
+       "https://docker.nju.edu.cn"
+     ]
+   }
+   ```
+
+3. **重启 Docker 服务**
+   保存并退出文件后，执行以下命令使配置生效:
+
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl restart docker
+   ```
+
+4. **验证配置**
+   运行以下命令，检查输出中是否包含你刚刚配置的镜像地址:
+
+   ```bash
+   docker info | grep -A 1 "Registry Mirrors"
+   ```
+
+5. **再次尝试**
+   配置完成后，重新运行你的命令：
+
+   ```bash
+   docker run hello-world
+   ```
+
+![image-20260807071400783](images/image-20260807071400783.png)
+
+![image-20260807071009175](images/image-20260807071009175.png)
 
 run的运行流程图
 
