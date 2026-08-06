@@ -195,7 +195,7 @@ $ sudo yum-config-manager \
 
 
 
-更新软件包索引
+### 更新软件包索引
 
 ```bash
 yum makecache fast
@@ -205,19 +205,12 @@ yum makecache fast
 
 
 
-### 安装docker引擎
+### 安装docker
 
 ```python
-yum install docker-ce docker-ce-cli containerd.io # docker-ce 社区版 ee 企业版
+# docker-ce 社区版/ ee 企业版/docker-ce-cli docker客户端/containerd.io容器
+yum install docker-ce docker-ce-cli containerd.io
 ```
-
-注意这里会有几个个y/n的判断
-
-![image-20200616150818860](Docker.assets/image-20200616150818860.png)
-
-![image-20200616150922549](Docker.assets/image-20200616150922549.png)
-
-要看到Complet再收手！
 
 
 
