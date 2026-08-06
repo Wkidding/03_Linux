@@ -91,17 +91,17 @@ Docker通过隔离机制，可以将服务器利用到极致。
 
 明确几个概念：
 
-1. 镜像(image)：docker镜像类似一个模板，可以通过这个模板来创建容器(container)，一个镜像可以创建多个容器，类似Python中的Class
+1. 镜像(image)：镜像是**轻量级、独立的可执行软件包**，包含运行应用程序所需的一切：代码、运行时、系统工具、系统库和设置。docker镜像采用**联合文件系统（UnionFS）实现分层存储**，每个镜像层都是只读的。docker镜像类似一个模板，可以通过这个模板来创建容器(container)，一个镜像可以创建多个容器，类似Python中的Class。
 
-2. 容器(container)：类似Python中通过Class创建的实例，Object；容器可以理解为一个简易的系统
+2. 容器(container)：容器是**镜像的运行实例**，是一个运行中的进程。容器在镜像的只读层之上添加了一个可写层，所有运行时修改都保存在这个可写层中。类似Python中通过Class创建的实例；容器可以理解为一个简易的系统
 
-3. 仓库(repository)：存放镜像的地方，
-
-   分为共有仓库和私有仓库
+3. 仓库(repository)：仓库用于**存储和分发 Docker 镜像**。Docker Hub 是官方公共仓库，也可以搭建私有仓库
 
    - Docker Hub：国外的
 
    - 阿里云：配置镜像加速
+
+
 
 ### 环境准备
 
@@ -307,15 +307,11 @@ rm -rf /var/lib/docker
 
 
 
-
-
 ## 底层原理
 
-Docker是真么工作的？
+Docker是如何工作的？
 
-Docker是一个Client-Server结构的系统，Docker的守护进程在主机上。通过Socket从客户端访问！
-
-DockerServer接受到Docker-Client的指令，
+Docker是一个Client-Server结构的系统，Docker的守护进程在主机上。通过Socket从客户端访问。DockerServer接受到Docker-Client的指令
 
 ![image-20200616162107363](Docker.assets/image-20200616162107363.png)
 
@@ -1543,6 +1539,17 @@ docker run -d -p 8088:9000 --restart=always -v /var/run/docker.sock:/var/run/doc
 
 
 ## Docker镜像
+
+### 镜像管理命令
+
+| 命令             | 说明         | 示例                                  |
+| :--------------- | :----------- | :------------------------------------ |
+| `docker pull`    | 拉取镜像     | `docker pull nginx:1.20`              |
+| `docker images`  | 列出本地镜像 | `docker images`                       |
+| `docker build`   | 构建镜像     | `docker build -t myapp:v1 .`          |
+| `docker tag`     | 给镜像打标签 | `docker tag nginx:latest my-nginx:v1` |
+| `docker rmi`     | 删除镜像     | `docker rmi nginx:latest`             |
+| `docker inspect` | 查看镜像详情 | `docker inspect nginx:latest`         |
 
 ### 原理
 
