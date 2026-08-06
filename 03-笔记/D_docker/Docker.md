@@ -320,7 +320,9 @@ Docker为什么比VM快？
 
 ## Docker命令
 
-### 帮助命令
+命令地址：[官网文档](https://docs.docker.com/reference/)
+
+### 1、帮助命令
 
 ```shell
 # 显示docker的基本信息
@@ -333,13 +335,7 @@ docker info
 docker [命令] --help
 ```
 
-[官网文档](https://docs.docker.com/reference/)
-
-![image-20200616163338187](Docker.assets/image-20200616163338187.png)
-
-
-
-### 镜像管理命令
+### 2、镜像管理命令
 
 | 命令             | 说明         | 示例                                  |
 | :--------------- | :----------- | :------------------------------------ |
@@ -500,7 +496,7 @@ docker rmi -f $(docker images -aq) # images -aq就是查所有镜像id，从而�
 
 ![image-20200617102126526](Docker.assets/image-20200617102126526.png)
 
-### 容器命令
+### 3、容器命令
 
 说明：有了镜像才能创建容器，linux，下载一个centos镜像来测试学习
 
@@ -668,7 +664,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```
 
-### 常用其他命令
+### 4、常用其他命令
 
 【视频书签：https://www.bilibili.com/video/BV1og4y1q7M4?p=11，不知不觉搞了一上午了，按部就班学东西的感觉真好，得找时间快点刷完】
 
@@ -1504,7 +1500,7 @@ ctrl + C退出，记得stop
 
 
 
-### 可视化
+### 5、可视化
 
 - portainer(先用这个)
 - Rancher(CI/CD时用)
