@@ -107,15 +107,7 @@ Docker通过隔离机制，可以将服务器利用到极致。
 
 1. Linux命令基础
 2. CentOS 7
-3. 使用Xshell链接远程服务器
-
-### 安装xshell
-
-下载CentOS7 https://www.jianshu.com/p/a63f47e096e8
-
-VMware配置虚拟机 https://blog.csdn.net/babyxue/article/details/80970526
-
-xshell链接服务器 https://blog.csdn.net/zzy1078689276/article/details/77280814
+3. 远程链接远程服务器
 
 ```
 [root@YMP ~]# cd /
@@ -322,7 +314,7 @@ Docker为什么比VM快？
 
 ![image-20200616162302653](Docker.assets/image-20200616162302653.png)
 
-所以说新建一个容器的时候，docker不需要像虚拟机一样重新加载一个操作系统内核，避免引导
+因此新建一个容器的时候，docker不需要像虚拟机一样重新加载一个操作系统内核，避免引导
 
 
 
