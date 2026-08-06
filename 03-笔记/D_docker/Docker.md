@@ -286,13 +286,13 @@ run的运行流程图
 
 ![image-20200616161441669](Docker.assets/image-20200616161441669.png)
 
-查看下载的镜像
+### 查看下载的镜像image
 
-```
+```shell
 docker images
 ```
 
-![image-20200616151913277](Docker.assets/image-20200616151913277.png)
+![image-20260807071616906](images/image-20260807071616906.png)
 
 ### 卸载Docker
 
