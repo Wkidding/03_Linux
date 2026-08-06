@@ -144,17 +144,7 @@ REDHAT_SUPPORT_PRODUCT_VERSION="7"
 
 ```
 
-![image-20200608091950655](Docker.assets/image-20200608091950655.png)
-
-用户名 
-
-密码
-
-查看ip：vmware里面输入，ip addIPr
-
-视频书签，p602:20
-
-https://www.bilibili.com/video/BV1og4y1q7M4?p=6
+![image-20260807064811249](images/image-20260807064811249.png)
 
 ### Centos安装
 
@@ -175,7 +165,7 @@ $ sudo yum remove docker \
 
 ```
 
-![image-20200608092628498](Docker.assets/image-20200608092628498.png)
+![image-20260807064723318](images/image-20260807064723318.png)
 
 ### 安装基本环境
 
