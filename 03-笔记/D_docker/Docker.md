@@ -322,10 +322,15 @@ Docker为什么比VM快？
 
 ### 帮助命令
 
-```
-docker version # 显示docker的基本信息
-docker info # 系统信息，镜像和容器的数量
-docker 命令 --help # 全部信息
+```shell
+# 显示docker的基本信息
+docker version 
+
+# 系统信息，镜像和容器的数量
+docker info 
+
+ # 全部信息
+docker [命令] --help
 ```
 
 [官网文档](https://docs.docker.com/reference/)
@@ -334,40 +339,46 @@ docker 命令 --help # 全部信息
 
 
 
-### 镜像命令
+### 镜像管理命令
 
-#### docker images
+| 命令             | 说明         | 示例                                  |
+| :--------------- | :----------- | :------------------------------------ |
+| `docker pull`    | 拉取镜像     | `docker pull nginx:1.20`              |
+| `docker images`  | 列出本地镜像 | `docker images`                       |
+| `docker build`   | 构建镜像     | `docker build -t myapp:v1 .`          |
+| `docker tag`     | 给镜像打标签 | `docker tag nginx:latest my-nginx:v1` |
+| `docker rmi`     | 删除镜像     | `docker rmi nginx:latest`             |
+| `docker inspect` | 查看镜像详情 | `docker inspect nginx:latest`         |
 
-查看所有本地主机上的镜像
+#### (1) docker images
 
 ```bash
-[root@192 ~]# docker images
+[root@YMP /]# docker images
 
-```
-
-![image-20200616172056530](Docker.assets/image-20200616172056530.png)
-
-```
 # 解释
 REPOSITORY  # 镜像仓库源
-TAG                 # 镜像的标签
-IMAGE ID           # 镜像的ID
-CREATED           # 镜像的创建时间
-SIZE # 镜像的大小
+TAG         # 镜像的标签
+IMAGE ID    # 镜像的ID
+CREATED     # 镜像的创建时间
+SIZE 			 # 镜像的大小
 ```
+
+![image-20260807074332795](images/image-20260807074332795.png)
 
 ```bash
---all , -a		Show all images (default hides intermediate images) # 显示所有
---digests		Show digests
+--all , -a		  Show all images (default hides intermediate images) # 显示所有
+--digests		    Show digests
 --filter , -f		Filter output based on conditions provided
---format		Pretty-print images using a Go template
---no-trunc		Don’t truncate output
---quiet , -q		Only show numeric IDs # 只显示id
+--format		    Pretty-print images using a Go template
+--no-trunc		  Don’t truncate output
+--quiet , -q		Only show numeric IDs   # 只显示id
 ```
 
-![image-20200616172651835](Docker.assets/image-20200616172651835.png)
+![image-20260807074626524](images/image-20260807074626524.png)
 
-#### docker search
+
+
+#### (2) docker search
 
 搜索仓库中的镜像，相当于网页搜索
 
@@ -411,7 +422,7 @@ docker search mysql --filter=STARS=3000 # 搜索出Stars大于3000的
 
 【20200616拳击课回来，好爽，赶紧把这个命令熟悉完】
 
-#### docker pull
+#### (3) docker pull
 
 下载镜像
 
@@ -470,7 +481,7 @@ docker images
 
 ![image-20200617101105899](Docker.assets/image-20200617101105899.png)
 
-#### docker rmi
+#### (4) docker rmi
 
 remove images
 
@@ -1531,17 +1542,6 @@ docker run -d -p 8088:9000 --restart=always -v /var/run/docker.sock:/var/run/doc
 
 
 ## Docker镜像
-
-### 镜像管理命令
-
-| 命令             | 说明         | 示例                                  |
-| :--------------- | :----------- | :------------------------------------ |
-| `docker pull`    | 拉取镜像     | `docker pull nginx:1.20`              |
-| `docker images`  | 列出本地镜像 | `docker images`                       |
-| `docker build`   | 构建镜像     | `docker build -t myapp:v1 .`          |
-| `docker tag`     | 给镜像打标签 | `docker tag nginx:latest my-nginx:v1` |
-| `docker rmi`     | 删除镜像     | `docker rmi nginx:latest`             |
-| `docker inspect` | 查看镜像详情 | `docker inspect nginx:latest`         |
 
 ### 原理
 
