@@ -169,49 +169,41 @@ $ sudo yum remove docker \
 
 ### 安装基本环境
 
-
-
-```
+```bash
 # 安装基本的安装包
 $ sudo yum install -y yum-utils
 ```
 
-!
-
-![image-20200608093114774](Docker.assets/image-20200608093114774.png)
-
 ### 设置镜像的仓库
-
-注意！！下载默认用国外的，太慢不要用！
 
 用国内镜像，百度搜索，docker的阿里云镜像地址
 
-```
+```bash
 # 不要用官网默认这个！
 $ sudo yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo # 默认是国外的
 
 # 换成下面的
-
+# 阿里云镜像
 $ sudo yum-config-manager \
     --add-repo \
-    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo # 阿里云镜像
+    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 ```
 
-![image-20200616145430166](Docker.assets/image-20200616145430166.png)
+![image-20260807065340944](images/image-20260807065340944.png)
 
-直接复制粘贴就OK了
 
-更像软件包索引
 
-```
+更新软件包索引
+
+```bash
 yum makecache fast
 ```
 
-![image-20200616150014082](Docker.assets/image-20200616150014082.png)
+![image-20260807065509764](images/image-20260807065509764.png)
 
-没有问题的话就是可以用的
+
 
 ### 安装docker引擎
 
