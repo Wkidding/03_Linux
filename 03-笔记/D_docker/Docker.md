@@ -22,7 +22,7 @@ linux基本命令，类似cd，mkdir等
 
 
 
-## Docker概述
+## 一、Docker概述
 
 Docker 是一个用于开发、发布和运行应用程序的开放平台。它使我们能够将应用与基础设施分离，从而快速交付软件。Docker 提供了在隔离的环境（称为**容器**）中打包和运行应用程序的能力，解决了开发、测试、生产环境不一致的核心痛点。
 
@@ -83,9 +83,9 @@ Docker通过隔离机制，可以将服务器利用到极致。
 | 启动速度 | 慢，分钟级               | 快，秒级      |
 |          |                          |               |
 
-## Docker安装
+## 二、Docker安装
 
-### Docker的基本组成
+### 1、Docker的基本组成
 
 ![image-20260807062842206](images/image-20260807062842206.png)
 
@@ -103,7 +103,7 @@ Docker通过隔离机制，可以将服务器利用到极致。
 
 
 
-### 环境准备
+### 2、环境准备
 
 1. Linux命令基础
 2. CentOS 7
@@ -138,11 +138,11 @@ REDHAT_SUPPORT_PRODUCT_VERSION="7"
 
 ![image-20260807064811249](images/image-20260807064811249.png)
 
-### Centos安装
+#### Centos安装
 
 https://docs.docker.com/engine/install/centos/
 
-### 卸载旧的版本
+### 3、卸载旧的docker版本
 
 ```
 # 卸载旧的版本
@@ -159,14 +159,14 @@ $ sudo yum remove docker \
 
 ![image-20260807064723318](images/image-20260807064723318.png)
 
-### 安装基本环境
+### 4、安装基本环境
 
 ```bash
 # 安装基本的安装包
 $ sudo yum install -y yum-utils
 ```
 
-### 设置镜像的仓库
+### 5、设置镜像的仓库
 
 用国内镜像，百度搜索，docker的阿里云镜像地址
 
@@ -176,8 +176,7 @@ $ sudo yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo # 默认是国外的
 
-# 换成下面的
-# 阿里云镜像
+# 换成下面的阿里云镜像
 $ sudo yum-config-manager \
     --add-repo \
     https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
@@ -187,7 +186,7 @@ $ sudo yum-config-manager \
 
 
 
-### 更新软件包索引
+### 6、更新软件包索引
 
 ```bash
 yum makecache fast
@@ -197,7 +196,7 @@ yum makecache fast
 
 
 
-### 安装docker
+### 7、安装docker
 
 ```python
 # docker-ce 社区版/ ee 企业版/docker-ce-cli docker客户端/containerd.io容器
@@ -206,7 +205,7 @@ yum install docker-ce docker-ce-cli containerd.io
 
 
 
-### 启动Docker
+### 8、启动Docker
 
 ```shell
 # 启动Docker
@@ -275,7 +274,7 @@ run的运行流程图
 
 ![image-20200616161441669](Docker.assets/image-20200616161441669.png)
 
-### 查看下载的镜像image
+### 9、查看下载的镜像image
 
 ```shell
 docker images
@@ -283,7 +282,7 @@ docker images
 
 ![image-20260807071616906](images/image-20260807071616906.png)
 
-### 卸载Docker
+### 10、卸载Docker
 
 ```bash
 # 卸载依赖
