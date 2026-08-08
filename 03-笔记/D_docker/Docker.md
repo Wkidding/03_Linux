@@ -223,7 +223,7 @@ docker run hello-world
 
 #### 启动docker的时候可能会存在网络不稳定因素，因此可以配置国内镜像加速器
 
-### 配置镜像加速器（最推荐）
+### 配置镜像加速器
 
 通过使用国内的镜像源来替代官方源，能有效避免网络超时问题。
 
@@ -240,14 +240,13 @@ docker run hello-world
    ```bash
    {
      "registry-mirrors": [
-       "https://docker.m.daocloud.io",
-       "https://dockerproxy.com",
-       "https://docker.mirrors.ustc.edu.cn",
-       "https://docker.nju.edu.cn"
+       "https://docker.xuanyuan.me",
+       "https://docker.1ms.run"
      ]
    }
+   ## 保存生效
    ```
-
+   
 3. **重启 Docker 服务**
    保存并退出文件后，执行以下命令使配置生效:
 
@@ -410,22 +409,6 @@ docker pull mysql # 下载mysql镜像，default tag，默认最新版latest
 ```
 
 ```shell
-## 镜像配置
-sudo vi /etc/docker/daemon.json
-
-{
-  "registry-mirrors": [
-    "https://docker.xuanyuan.me",
-    "https://docker.1ms.run"
-  ]
-}
-## 保存生效
-
-## 重启Docker服务
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-
-
 [root@YMP ~]# docker pull mysql
 Using default tag: latest                         # 不写tag默认最新版
 latest: Pulling from library/mysql
