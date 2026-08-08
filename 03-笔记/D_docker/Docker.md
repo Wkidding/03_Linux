@@ -409,13 +409,27 @@ docker search mysql --filter=STARS=3000  # 搜索出Stars大于3000的
 docker pull mysql # 下载mysql镜像，default tag，默认最新版latest
 ```
 
-```bash
-[root@192 ~]# sudo systemctl daemon-reload
-[root@192 ~]# sudo systemctl restart docker
-[root@192 ~]# docker pull mysql
-Using default tag: latest # 不写tag默认最新版
+```shell
+## 镜像配置
+sudo vi /etc/docker/daemon.json
+
+{
+  "registry-mirrors": [
+    "https://docker.xuanyuan.me",
+    "https://docker.1ms.run"
+  ]
+}
+## 保存生效
+
+## 重启Docker服务
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+
+[root@YMP ~]# docker pull mysql
+Using default tag: latest                         # 不写tag默认最新版
 latest: Pulling from library/mysql
-8559a31e96f4: Pull complete  # layer 分层下载，docker image的核心 联合文件系统
+8559a31e96f4: Pull complete                       # layer 分层下载，docker image的核心 联合文件系统
 d51ce1c2e575: Pull complete 
 c2344adc4858: Pull complete 
 fcf3ceff18fc: Pull complete 
@@ -427,7 +441,7 @@ c75914a65ca2: Pull complete
 453ac13c00a3: Pull complete 
 9e680cd72f08: Pull complete 
 a6b5dc864b6c: Pull complete 
-Digest: sha256:8b7b328a7ff6de46ef96bcf83af048cb00a1c86282bfca0cb119c84568b4caf6#签名
+Digest: sha256:8b7b328a7ff6de46ef96bcf83af048cb00a1c86282bfca0cb119c84568b4caf6   #签名
 Status: Downloaded newer image for mysql:latest
 docker.io/library/mysql:latest # 真实地址
 
