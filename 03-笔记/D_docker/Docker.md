@@ -367,7 +367,7 @@ SIZE 			 # 镜像的大小
 --filter , -f		Filter output based on conditions provided
 --format		    Pretty-print images using a Go template
 --no-trunc		  Don’t truncate output
---quiet , -q		Only show numeric IDs   # 只显示id
+--quiet , -q		Only show numeric IDs                                # 只显示id
 ```
 
 ![image-20260807074626524](images/image-20260807074626524.png)
@@ -378,49 +378,32 @@ SIZE 			 # 镜像的大小
 
 搜索仓库中的镜像，相当于网页搜索
 
-[网页搜索](http://hub.docker.com)
+dockerHub 地址：[网页搜索](http://hub.docker.com)
 
-![image-20200616173009473](Docker.assets/image-20200616173009473.png)
+![image-20200616173009473](images/image-20200616173009473.png)
 
 mysql
 
-![image-20200616173050756](Docker.assets/image-20200616173050756.png)
+![image-20200616173050756](images/image-20200616173050756.png)
 
-```
+```shell
 docker search mysql
-```
 
-![image-20200616173308194](Docker.assets/image-20200616173308194.png)
-
-```
 docker search --help
-```
 
-![image-20200616173740981](Docker.assets/image-20200616173740981.png)
-
-```bash
 # 解释
 Options:
   -f, --filter filter   Filter output based on conditions provided
       --format string   Pretty-print search using a Go template
       --limit int       Max number of search results (default 25)
       --no-trunc        Don't truncate output
-
+      
+docker search mysql --filter=STARS=3000  # 搜索出Stars大于3000的
 ```
 
-```
-docker search mysql --filter=STARS=3000 # 搜索出Stars大于3000的
-```
 
-![image-20200616174440284](Docker.assets/image-20200616174440284.png)
-
-【视频书签，https://www.bilibili.com/video/BV1og4y1q7M4?p=9，13:44，太热了我要缓一缓】
-
-【20200616拳击课回来，好爽，赶紧把这个命令熟悉完】
 
 #### (3) docker pull
-
-下载镜像
 
 ```bash
 docker pull mysql # 下载mysql镜像，default tag，默认最新版latest
@@ -448,22 +431,28 @@ Digest: sha256:8b7b328a7ff6de46ef96bcf83af048cb00a1c86282bfca0cb119c84568b4caf6#
 Status: Downloaded newer image for mysql:latest
 docker.io/library/mysql:latest # 真实地址
 
-# 即
-docker pull mysql
-# 等价于
-docker pull docker.io/library/mysql:latest
-
 ```
 
 ```bash
 
-# 指定版本下载 
+# 直接拉取最新版本的docker镜像
+docker pull mysql
+# 等价于
+docker pull docker.io/library/mysql:latest
+
+# 也可以指定版本下载 
 docker pull mysql:5.7
 ```
 
-版本来自于官网，版本库https://hub.docker.com/_/mysql
+docker镜像的版本来自于官网，版本库https://hub.docker.com/_/mysql
 
-![image-20200617094339687](Docker.assets/image-20200617094339687.png)
+![image-20200617094339687](images/image-20200617094339687.png)
+
+
+
+
+
+
 
 
 
