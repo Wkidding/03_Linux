@@ -314,7 +314,7 @@ Docker为什么比VM快？
 
 
 
-## Docker命令
+## 三、Docker命令
 
 命令地址：[官网文档](https://docs.docker.com/reference/)
 
@@ -331,7 +331,7 @@ docker info
 docker [命令] --help
 ```
 
-### 2、镜像管理命令
+### 2、镜像image管理命令
 
 | 命令             | 说明         | 示例                                  |
 | :--------------- | :----------- | :------------------------------------ |
@@ -427,8 +427,11 @@ docker.io/library/mysql:latest # 真实地址
 
 ```
 
-```bash
 
+
+
+
+```bash
 # 直接拉取最新版本的docker镜像
 docker pull mysql
 # 等价于
@@ -456,28 +459,30 @@ docker镜像的版本来自于官网，版本库https://hub.docker.com/_/mysql
 docker images
 ```
 
-此时查看镜像，可以看到新下载的两个
+此时查看镜sa
 
 ![image-20200617101105899](Docker.assets/image-20200617101105899.png)
 
 #### (4) docker rmi
 
-remove images
-
 ```bash
 # 删除一个 可以通过名称 也可以指定id -f表示删除所有
 docker rmi -f 9cfcce23593a
+
 # 删除多个 用空格分隔id
 docker rmi -f id id id
+
 # 删除所有 
 docker rmi -f $(docker images -aq) # images -aq就是查所有镜像id，从而递归删除
 ```
 
-![image-20200617102049613](Docker.assets/image-20200617102049613.png)
+![image-20200617102049613](images/image-20200617102049613.png)
 
 
 
-![image-20200617102126526](Docker.assets/image-20200617102126526.png)
+![image-20200617102126526](images/image-20200617102126526.png)
+
+
 
 ### 3、容器命令
 
@@ -1520,7 +1525,7 @@ docker run -d -p 8088:9000 --restart=always -v /var/run/docker.sock:/var/run/doc
 
 
 
-## Docker镜像
+## 四、Docker镜像
 
 ### 原理
 
