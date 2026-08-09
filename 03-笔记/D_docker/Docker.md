@@ -978,7 +978,7 @@ docker attach
 
 ###### 方式二：使用`docker attach [CONTAINER ID]`
 
-![image-20260809170311716](images/image-20260809170311716.png)
+![image-20260809170436467](images/image-20260809170436467.png)
 
 
 
