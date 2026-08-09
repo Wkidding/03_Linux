@@ -431,8 +431,6 @@ docker.io/library/mysql:latest             # 镜像的真实地址
 
 ![image-20260809140156087](images/image-20260809140156087.png)
 
-
-
 ```bash
 # 直接拉取最新版本的docker镜像
 docker pull mysql
@@ -457,8 +455,6 @@ docker images
 
 
 
-
-
 #### (4) docker rmi
 
 ```bash
@@ -469,7 +465,8 @@ docker rmi -f 9cfcce23593a
 docker rmi -f id id id
 
 # 删除所有 
-docker rmi -f $(docker images -aq) # images -aq就是查所有镜像id，从而递归删除
+# images -aq就是查所有镜像id，从而递归删除
+docker rmi -f $(docker images -aq) 
 ```
 
 ![image-20200617102049613](images/image-20200617102049613.png)
@@ -494,8 +491,6 @@ docker.io/library/centos:7
 
 ```
 
-![image-20200617103406974](Docker.assets/image-20200617103406974.png)
-
 #### 新建容器并启动
 
 ```shell
@@ -511,7 +506,58 @@ docker run [可选参数] image
 	-p 容器端口
 	
 -p 随机指定端口
+
+
+
+🎯 `-it` 的含义（两个参数组合）
+
+- `-i`（`--interactive`）：保持容器的**标准输入（STDIN）**打开。即使你没有连接，它也始终处于等待接收输入的状态。
+- `-t`（`--tty`）：为容器分配一个**伪终端（pseudo-TTY）**，让容器内的程序（比如 bash）认为自己是在一个真实的终端中运行，从而支持交互式操作（比如显示彩色提示符、响应 Ctrl+C 等）。
+
+**合在一起 `-it` 表示：以“交互式终端”模式运行容器**，这是进入容器内部进行操作的最常用方式。
 ```
+
+##### 使用命令进入centos容器
+
+```shell
+docker run -it centos /bin/bash
+```
+
+###### 踩坑实录
+
+机器中下载的是centos7镜像，tag为7，直接使用 `docker run -it centos /bin/bash`但其中 `centos` 没有指定 tag，Docker 会默认拉取 `centos:latest`。
+
+由于本地镜像列表中只有 `centos:7`（`eeb6ee3f44bd`），并没有 `centos:latest`，所以 Docker 尝试从远程仓库拉取 `centos:latest`，但由于网络原因（或配置的镜像加速器仍不可用）拉取失败，于是报错“Unable to find image 'centos:latest' locally”。
+
+```shell
+[root@YMP]:/data]# docker images
+REPOSITORY                                          TAG       IMAGE ID       CREATED        SIZE
+nginx                                               latest    5253dc86cc93   4 days ago     161MB
+tomcat                                              9.0       b326c1d164e9   5 days ago     422MB
+mysql                                               latest    d236310860c6   12 days ago    945MB
+hello-world                                         latest    e2ac70e7319a   4 months ago   10.1kB
+centos                                              7         eeb6ee3f44bd   4 years ago    204MB
+registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle   19c       7b5eb4597688   6 years ago    6.61GB
+[root@YMP]:/data]#
+[root@YMP]:~]# docker run -it centos bin/bash
+Unable to find image 'centos:latest' locally
+
+docker: Error response from daemon: Get "https://registry-1.docker.io/v2/": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).
+See 'docker run --help'.
+[root@YMP]:~]#
+[root@YMP]:~]#
+
+```
+
+![image-20260809152758665](images/image-20260809152758665.png)
+
+###### 使用正确命令进入
+
+```shell
+docker run -it centos:7 /bin/bash
+```
+
+![image-20260809152937412](images/image-20260809152937412.png)
 
 #### 进入退出容器
 
@@ -523,6 +569,8 @@ ls
 # 退出
 exit
 ```
+
+
 
 ![image-20200617104004004](Docker.assets/image-20200617104004004.png)
 
@@ -1497,7 +1545,7 @@ ctrl + C退出，记得stop
 
 ![image-20200618113556445](Docker.assets/image-20200618113556445.png)
 
-(3) 拉取centos7
+##### (3) 拉取centos7
 
 ```shell
 [root@YMP ~]# docker pull centos:7
@@ -1506,10 +1554,9 @@ ctrl + C退出，记得stop
 Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
 Status: Downloaded newer image for centos:7
 docker.io/library/centos:7
-
 ```
 
-(4)拉取orcale19c
+##### (4)拉取orcale19c
 
 ```shell
 [root@YMP ~]# docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
@@ -1524,7 +1571,6 @@ Digest: sha256:3898a9394720f30ce7f0b83ef2d172f4cd11b958282e0505f83cf2b0e5eaf7d4
 Status: Downloaded newer image for registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 [root@YMP ~]#
-
 ```
 
 
