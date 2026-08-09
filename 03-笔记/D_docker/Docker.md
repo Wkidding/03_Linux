@@ -603,17 +603,7 @@ exit
 Ctrl + P + Q
 ```
 
-```shell
-[root@192 ~]# docker run -it centos /bin/bash
-[root@bfcea13c40cd /]# [root@192 ~]# docker ps ##注意这里会自动给个命令，删掉
-CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
-bfcea13c40cd        centos              "/bin/bash"         About a minute ago   Up About a minute                       stoic_wilson
-edbd9366d959        centos              "/bin/bash"         7 minutes ago        Up 7 minutes                            affectionate_bartik
-[root@192 ~]# docker exec -it edbd9366d959 /bin/bash ## 再次进入
-[root@edbd9366d959 /]# exit ##停止并推出
-exit
 
-```
 
 #### 删除容器
 
@@ -627,33 +617,32 @@ docker ps -a -q|xargs docker rm
 ```
 
 ```shell
-[root@192 ~]# docker ps -a
+[root@YMP]:~]# docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 bfcea13c40cd        centos              "/bin/bash"         29 minutes ago      Up 29 minutes                                   stoic_wilson
 edbd9366d959        centos              "/bin/bash"         35 minutes ago      Up 35 minutes                                   affectionate_bartik
 9939864fa2e6        centos              "bin/bash"          48 minutes ago      Exited (0) 48 minutes ago                       unruffled_knuth
 5f42e9930435        centos              "/bin/bash"         52 minutes ago      Exited (0) 49 minutes ago                       lucid_cannon
 a89ddb393d3d        bf756fb1ae65        "/hello"            20 hours ago        Exited (0) 20 hours ago                         gracious_bhabha
-[root@192 ~]# docker rm 5f42e9930435
+[root@YMP]:~]# docker rm 5f42e9930435
 5f42e9930435
-[root@192 ~]# docker rm edbd9366d959      # 注意正在运行的容器不能删除
+[root@YMP]:~]# docker rm edbd9366d959      # 注意正在运行的容器不能删除
 Error response from daemon: You cannot remove a running container edbd9366d9596c744dd449119269b04de2f2a494e7fc471f6396bcefd94c33fe. Stop the container before attempting removal or force remove
 
-```
-
-```shell
-[root@192 ~]# docker ps -aq # 所有容器id
+[root@YMP]:~]# docker ps -aq # 所有容器id
 bfcea13c40cd
 edbd9366d959
 9939864fa2e6
 a89ddb393d3d
-[root@192 ~]# docker rm -f $(docker ps -aq) # 全部删除
+[root@YMP]:~]# docker rm -f $(docker ps -aq) # 全部删除
 bfcea13c40cd
 edbd9366d959
 9939864fa2e6
 a89ddb393d3d
 
 ```
+
+
 
 #### 启动和停止容器的操作
 
@@ -685,6 +674,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 
 ```
+
+
 
 ### 4、常用其他命令
 
