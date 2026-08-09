@@ -647,35 +647,44 @@ a89ddb393d3d
 #### 启动和停止容器的操作
 
 ```shell
-docker start
-docker restart
-docker stop
+docker start [CONTAINER ID ]
+docker restart [CONTAINER ID ]
+docker stop [CONTAINER ID ]
 docker kill
 ```
 
 ```shell
-[root@192 ~]# docker run -it centos /bin/bash
-[root@7b1a7dd10ea4 /]# exit
-exit
-[root@192 ~]# docker ps #查看正在运行的
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-[root@192 ~]# docker ps -a # 查看历史运行过的
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
-7b1a7dd10ea4        centos              "/bin/bash"         54 seconds ago      Exited (0) 42 seconds ago                       fervent_mirzakhani
-[root@192 ~]# docker start 7b1a7dd10ea4 # 启动当前这个容器 container id 粘过 来
-7b1a7dd10ea4
-[root@192 ~]# docker ps # 查看当前运行容器 发现启动成功
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-7b1a7dd10ea4        centos              "/bin/bash"         2 minutes ago       Up 28 seconds                           fervent_mirzakhani
-[root@192 ~]# docker stop 7b1a7dd10ea4 # 停止运行
-7b1a7dd10ea4
-[root@192 ~]# docker ps # 再次查看 没有这个容器了
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-
+## 查看正在运行的
+[root@YMP]:~]#docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+## 查看历史运行过的
+[root@YMP]:~]# docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                       PORTS     NAMES
+ed8a9aa0e49a   centos:7      "/bin/bash"   26 seconds ago   Exited (127) 9 seconds ago             eloquent_swanson
+f914d19b688c   centos:7      "/bin/bash"   4 minutes ago    Exited (127) 3 minutes ago             thirsty_goodall
+14daff4d07db   centos:7      "/bin/bash"   29 minutes ago   Exited (0) 28 minutes ago              objective_lehmann
+e52fd1a6ecfd   hello-world   "/hello"      2 days ago       Exited (0) 2 days ago                  dazzling_brattain
+## 启动当前centos:7 这个容器,直接把container id 粘过来
+[root@YMP]:~]# docker start ed8a9aa0e49a
+ed8a9aa0e49a
+[root@YMP]:~]#
+## 查看当前运行容器 发现启动成功
+[root@YMP]:~]# docker ps
+CONTAINER ID   IMAGE      COMMAND       CREATED              STATUS         PORTS     NAMES
+ed8a9aa0e49a   centos:7   "/bin/bash"   About a minute ago   Up 3 seconds             eloquent_swanson
+[root@YMP]:~]#
+## 停止运行
+[root@YMP]:~]# docker stop ed8a9aa0e49a
+ed8a9aa0e49a
+[root@YMP]:~]#
+## 再次查看 没有这个容器了
+[root@YMP]:~]#  docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@YMP]:~]#
 
 ```
 
-
+![image-20260809160530291](images/image-20260809160530291.png)
 
 ### 4、常用其他命令
 
