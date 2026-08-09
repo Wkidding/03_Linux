@@ -647,9 +647,9 @@ a89ddb393d3d
 #### 启动和停止容器的操作
 
 ```shell
-docker start [CONTAINER ID ]
-docker restart [CONTAINER ID ]
-docker stop [CONTAINER ID ]
+docker start [CONTAINER ID]
+docker restart [CONTAINER ID]
+docker stop [CONTAINER ID]
 docker kill
 ```
 
@@ -688,41 +688,22 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 ### 4、常用其他命令
 
-#### 后台启动docker
+#### (1) 后台启动docker
 
 ```shell
-docker run -d 镜像名
-# 用docker ps 查看的时候 发现停止了
-
-# 后台运行，docker发现前台没有，容器启动后，发现自己没有提供服务，会立刻停止
+docker run -d -it centos:7 /bin/bash
+# 用docker ps 查看的时候,未查询到运行中的镜像
+docker ps 
 ```
 
-```shell
-Last login: Wed Jun 17 19:47:35 2020
-[root@192 ~]# systemctl start docker # 关机后重启了，需要启动docker
-[root@192 ~]# docker run -d centos # 运行
-8ce188e5fee31c2fac93c0a405ee1a95c38dbc50cb47c35b19c0039c27558ded
-[root@192 ~]# docker ps -a # 查看正在运行的
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
-8ce188e5fee3        centos              "/bin/bash"         19 seconds ago      Exited (0) 18 seconds ago                       tender_dirac
-7b1a7dd10ea4        centos              "/bin/bash"         8 hours ago         Exited (0) 8 hours ago                          fervent_mirzakhani
-
-```
+![image-20260809164455023](images/image-20260809164455023.png)
 
 
 
-#### 查看日志
+#### (2) 查看日志
 
 ```shell
-docker logs
-docker logs -f -t --tail n 【id】
-
-```
-
-![image-20200617161744298](Docker.assets/image-20200617161744298.png)
-
-```shell
-[root@192 ~]# docker logs --help
+[root@YMP]:~]#docker logs --help
 
 Usage:	docker logs [OPTIONS] CONTAINER
 
@@ -741,7 +722,18 @@ Options:
                        2013-01-02T13:23:37) or relative
                        (e.g. 42m for 42 minutes)
 
+## 运行image->执行一些命令->退出容器->查看docker log
+[root@YMP]:~]#docker run -it centos:7 /bin/bash
+[root@YMP]:~]#docker ps
+[root@YMP]:~]#docker ps -a
+[root@YMP]:~]#docker logs -tf a34faa845435
+[root@YMP]:~]#
+
 ```
+
+![image-20260809165039734](images/image-20260809165039734.png)
+
+
 
 ```shell
 whiel true;do echo shenzai;sleep 
@@ -789,7 +781,7 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
 
 ```
 
-#### 查看正在运行的容器信息
+#### (3) 查看正在运行的容器信息
 
 ```shell
 [root@192 ~]# docker inspect cb6d7fbc3f27
@@ -1033,7 +1025,7 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
 cb6d7fbc3f27
 ```
 
-#### 进入当前正在运行的容器
+#### (4) 进入当前正在运行的容器
 
 ```shell
 # 我们通常容器都是使用后台方式运行的e
@@ -1069,7 +1061,7 @@ exit
 
 
 
-#### 从容器内拷贝文件到主机上
+#### (5) 从容器内拷贝文件到主机上
 
 ```shell
 # 运行
@@ -1119,14 +1111,12 @@ test.java
 # 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步 /home /home
 ```
 
-#### 查看内容占用
+#### (6) 查看内容占用
 
 ```shell
 docker stats
 
 ```
-
-
 
 
 
