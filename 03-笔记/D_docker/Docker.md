@@ -453,6 +453,8 @@ docker images
 
 
 
+
+
 #### (4) docker rmi
 
 ```bash
@@ -479,7 +481,13 @@ docker rmi -f $(docker images -aq) # images -aq就是查所有镜像id，从而�
 说明：有了镜像才能创建容器，linux，下载一个centos镜像来测试学习
 
 ```bash
-docker pull centos
+[root@YMP ~]# docker pull centos:7
+7: Pulling from library/centos
+2d473b07cdd5: Pull complete
+Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+Status: Downloaded newer image for centos:7
+docker.io/library/centos:7
+
 ```
 
 ![image-20200617103406974](Docker.assets/image-20200617103406974.png)
@@ -643,8 +651,6 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```
 
 ### 4、常用其他命令
-
-【视频书签：https://www.bilibili.com/video/BV1og4y1q7M4?p=11，不知不觉搞了一上午了，按部就班学东西的感觉真好，得找时间快点刷完】
 
 #### 后台启动docker
 
@@ -1198,7 +1204,7 @@ Commands:
 
 #### 作业练习
 
-##### 部署Nginx
+##### (1) 部署Nginx
 
 ![image-20200618100621199](Docker.assets/image-20200618100621199.png)
 
@@ -1206,17 +1212,28 @@ Commands:
 # 官网搜索nginx，可以看到帮助文档
 
 # 下载镜像
-[root@192 home]# docker pull nginx
+[root@YMP ~]# docker pull nginx
 Using default tag: latest
 latest: Pulling from library/nginx
-8559a31e96f4: Pull complete 
-8d69e59170f7: Pull complete 
-3f9f1ec1d262: Pull complete 
-d1f5ff4f210d: Pull complete 
-1e22bfa8652e: Pull complete 
-Digest: sha256:21f32f6c08406306d822a0e6e8b7dc81f53f336570e852e25fbe1e3e3d0d0133
+26c307b5e35a: Pulling fs layer
+3c55dc422a81: Pulling fs layer
+d84ae7b21412: Pulling fs layer
+c0df8d325117: Waiting
+b8b80b9bc028: Waiting
+f5de6e85ac74: Waiting
+5a4222b844e8: Waiting
+latest: Pulling from library/nginx
+26c307b5e35a: Pull complete
+3c55dc422a81: Pull complete
+d84ae7b21412: Pull complete
+c0df8d325117: Pull complete
+b8b80b9bc028: Pull complete
+f5de6e85ac74: Pull complete
+5a4222b844e8: Pull complete
+Digest: sha256:8541484afbc9c8a5a8a99b379568ebbc957f658583ec9448fc43104229c03cf8
 Status: Downloaded newer image for nginx:latest
 docker.io/library/nginx:latest
+
 
 # 查看镜像
 [root@192 home]# docker images
@@ -1311,7 +1328,7 @@ exit
 
 思考问题：每次改动nginx配置文件，都需要进入容器内部，十分麻烦，要是可以在容器外部提供一个映射路径，达到在容器修改文件名，容器内部就可以自动修改？-v 数据卷技术！
 
-##### 部署tomcat
+##### (2) 部署tomcat
 
 ![image-20200618100551587](Docker.assets/image-20200618100551587.png)
 
@@ -1475,6 +1492,36 @@ ctrl + C退出，记得stop
 ##### 思考：用kibana链接elasticsearch
 
 ![image-20200618113556445](Docker.assets/image-20200618113556445.png)
+
+(3) 拉取centos7
+
+```shell
+[root@YMP ~]# docker pull centos:7
+7: Pulling from library/centos
+2d473b07cdd5: Pull complete
+Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+Status: Downloaded newer image for centos:7
+docker.io/library/centos:7
+
+```
+
+(4)拉取orcale19c
+
+```shell
+[root@YMP ~]# docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+19c: Pulling from zhuyijun/oracle
+bce8f778fef0: Pull complete
+3fc3fd32c0bc: Pull complete
+02948dd6d654: Pull complete
+67f2dfeb2f1b: Pull complete
+2e42d8039fd9: Pull complete
+b94f01bb60c6: Pull complete
+Digest: sha256:3898a9394720f30ce7f0b83ef2d172f4cd11b958282e0505f83cf2b0e5eaf7d4
+Status: Downloaded newer image for registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+[root@YMP ~]#
+
+```
 
 
 
