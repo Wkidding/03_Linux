@@ -407,27 +407,25 @@ docker pull mysql # 下载mysql镜像，default tag，默认最新版latest
 
 ```shell
 [root@YMP ~]# docker pull mysql
-Using default tag: latest                         # 不写tag默认最新版
+Using default tag: latest                  # 不写tag默认最新版
 latest: Pulling from library/mysql
-8559a31e96f4: Pull complete                       # layer 分层下载，docker image的核心 联合文件系统
-d51ce1c2e575: Pull complete 
-c2344adc4858: Pull complete 
-fcf3ceff18fc: Pull complete 
-16da0c38dc5b: Pull complete 
-b905d1797e97: Pull complete 
-4b50d1c6b05c: Pull complete 
-c75914a65ca2: Pull complete 
-1ae8042bdd09: Pull complete 
-453ac13c00a3: Pull complete 
-9e680cd72f08: Pull complete 
-a6b5dc864b6c: Pull complete 
-Digest: sha256:8b7b328a7ff6de46ef96bcf83af048cb00a1c86282bfca0cb119c84568b4caf6   #签名
+30627cea5424: Pull complete                # layer 分层下载，docker image的核心 联合文件系统
+7e887550bdc4: Pull complete
+35475b275575: Pull complete
+27683f99b921: Pull complete
+0bb65eb170f9: Pull complete
+e480dcc782ea: Pull complete
+1791a4d7fecf: Pull complete
+71fa527c6c68: Pull complete
+c4e766e27938: Pull complete
+feffc3e2a7dd: Pull complete
+Digest: sha256:66aec17cd21a956029b83f083b813073859e8355dc1a00e55df6ba02f0e32345    #签名
 Status: Downloaded newer image for mysql:latest
-docker.io/library/mysql:latest # 真实地址
+docker.io/library/mysql:latest             # 镜像的真实地址
 
 ```
 
-
+![image-20260809140156087](images/image-20260809140156087.png)
 
 
 
@@ -445,23 +443,15 @@ docker镜像的版本来自于官网，版本库https://hub.docker.com/_/mysql
 
 ![image-20200617094339687](images/image-20200617094339687.png)
 
-
-
-
-
-
-
-
-
-![image-20200617100948088](Docker.assets/image-20200617100948088.png)
-
-```
+```shell
 docker images
 ```
 
-此时查看镜sa
+此时查看镜
 
-![image-20200617101105899](Docker.assets/image-20200617101105899.png)
+![image-20260809140531886](images/image-20260809140531886.png)
+
+
 
 #### (4) docker rmi
 
