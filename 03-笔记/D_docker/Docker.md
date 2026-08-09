@@ -991,64 +991,68 @@ docker attach
 | **退出影响** | `exit` 退出时，**仅结束这个新进程**，容器本身**继续运行**（只要主进程还在） | `exit` 退出时，**会直接终止容器的主进程**，导致容器**停止运行** |
 | **常用场景** | 进入容器执行管理操作、调试、查看日志（**最常用**）           | 查看容器主进程的实时输出，或向主进程发送标准输入（较少用）   |
 
+
+
 #### (5) 从容器内拷贝文件到主机上
 
+##### 首先运行docker
+
+![image-20260809170752185](images/image-20260809170752185.png)
+
+使用另一个sess登陆容器进行拷贝文件到主机
+
 ```shell
-# 运行
-[root@192 ~]# docker run -it centos
-# ctrl P Q 不关闭退出，查看
-[root@0569081aa89c /]# [root@192 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-0569081aa89c        centos              "/bin/bash"         19 seconds ago      Up 19 seconds    
-hopeful_chebyshev
+## 进入正在运行的容器
+[root@YMP]:~]# docker ps
+CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS         PORTS     NAMES
+414b951ee19e   centos:7   "/bin/bash"   3 minutes ago   Up 3 minutes             naughty_aryabhata
+[root@YMP]:~]#
+[root@YMP]:~]# docker attach 414b951ee19e
 
-# 查看主机home下无文件
-[root@192 ~]# cd /home
-[root@192 home]# ls
+## 在目录中创建test.c文件
+[root@414b951ee19e /]# touch test.c
 
-# 进入正在运行的容器
-[root@192 home]# docker attach 0569081aa89c
-
-# 进入容器home目录
-[root@0569081aa89c /]# cd /home
-
-# 在目录中创建java文件
-[root@0569081aa89c home]# touch test.java
-
-# 退出并停止容器
-[root@0569081aa89c home]# exit
+## 退出并停止容器
+[root@414b951ee19e /]# exit
 exit
 
-# 查看现在运行的容器
-[root@192 home]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-
-# 容器虽然被停止，但是数据都会保留
-[root@192 home]# docker ps -a
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS               NAMES
-0569081aa89c        centos              "/bin/bash"              3 minutes ago       Exited (0) 8 seconds ago                           hopeful_chebyshev
-f589e5684a01        centos              "/bin/bash"              44 minutes ago      Exited (0) 44 minutes ago                          cranky_easley
-cb6d7fbc3f27        centos              "/bin/sh -c 'while t…"   54 minutes ago      Exited (137) 42 minutes ago                        dreamy_almeida
-c2887d35c71d        centos              "/bin/bash"              58 minutes ago      Exited (127) 16 minutes ago                        vigorous_kare
-8ce188e5fee3        centos              "/bin/bash"              About an hour ago   Exited (0) About an hour ago                       tender_dirac
-7b1a7dd10ea4        centos              "/bin/bash"              9 hours ago         Exited (0) 9 hours ago                             fervent_mirzakhani
-
-# 容器数据拷贝到主机
-[root@192 home]# docker cp 0569081aa89c:/home/test.java /home
-[root@192 home]# ls
-test.java
+## 查看现在运行的容器
+[root@YMP]:~]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@YMP]:~]#
+## 容器虽然被停止，但是数据都会保留
+[root@YMP]:~]# docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                           PORTS     NAMES
+414b951ee19e   centos:7      "/bin/bash"   3 minutes ago       Exited (0) 15 seconds ago                  naughty_aryabhata
+f2543810e378   centos:7      "/bin/bash"   10 minutes ago      Exited (0) 7 minutes ago                   naughty_napier
+a34faa845435   centos:7      "/bin/bash"   20 minutes ago      Exited (0) 20 minutes ago                  competent_ptolemy
+6e80975531fe   centos:7      "/bin/bash"   25 minutes ago      Exited (137) 21 minutes ago                nice_wiles
+61b2c3cfd934   hello-world   "/hello"      29 minutes ago      Exited (0) 29 minutes ago                  crazy_khayyam
+ed8a9aa0e49a   centos:7      "/bin/bash"   About an hour ago   Exited (137) About an hour ago             eloquent_swanson
+f914d19b688c   centos:7      "/bin/bash"   About an hour ago   Exited (127) About an hour ago             thirsty_goodall
+14daff4d07db   centos:7      "/bin/bash"   2 hours ago         Exited (0) 2 hours ago                     objective_lehmann
+e52fd1a6ecfd   hello-world   "/hello"      2 days ago          Exited (0) About an hour ago               dazzling_brattain
+[root@YMP]:~]#
+## 容器数据拷贝到主机
+[root@YMP]:~]# docker cp 414b951ee19e:/test.c /data
+Successfully copied 1.54kB to /data
+[root@YMP]:~]#
+[root@YMP]:~]# ll /data/test.c
+-rw-r--r-- 1 root root 0 8月   9 17:09 /data/test.c
+[root@YMP]:~]#
 
 # 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步 /home /home
 ```
+
+
 
 #### (6) 查看内容占用
 
 ```shell
 docker stats
-
 ```
 
-
+![image-20260809170717779](images/image-20260809170717779.png)
 
 #### 小结
 
