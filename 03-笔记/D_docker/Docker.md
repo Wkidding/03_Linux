@@ -563,52 +563,36 @@ docker run -it centos:7 /bin/bash
 
 ```bash
 # 进入
-docker run -it centos /bin/bash 
+docker run -it centos /bin/bash
+
+## 注意这里面主机名，变为了centos的id
+
 # 查看目录
 ls
 # 退出
 exit
 ```
 
+![image-20260809153120093](images/image-20260809153120093.png)
 
 
-![image-20200617104004004](Docker.assets/image-20200617104004004.png)
-
-注意这里面主机名，编程了centos的id
-
-这里面就是一个容器，套娃啊
 
 #### 查看运行的容器
 
-```
+```shell
 # 查看正在运行的容器
 docker ps
 # 查看曾经运行的容器
 docker ps -a
 # 显示最近创建的容器，设置显示个数
-docker ps -a - n=? 
+docker ps -a -n=5 
 # 只显示容器的编号
 docker ps -aq
 ```
 
-```shell
-[root@192 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-[root@192 ~]# docker ps -a
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
-9939864fa2e6        centos              "bin/bash"          4 minutes ago       Exited (0) 4 minutes ago                       unruffled_knuth
-5f42e9930435        centos              "/bin/bash"         8 minutes ago       Exited (0) 4 minutes ago                       lucid_cannon
-a89ddb393d3d        bf756fb1ae65        "/hello"            19 hours ago        Exited (0) 19 hours ago                        gracious_bhabha
-[root@192 ~]# docker ps -a -n=2
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
-9939864fa2e6        centos              "bin/bash"          6 minutes ago       Exited (0) 6 minutes ago                       unruffled_knuth
-5f42e9930435        centos              "/bin/bash"         10 minutes ago      Exited (0) 7 minutes ago 
-[root@192 ~]# docker ps -aq
-9939864fa2e6
-5f42e9930435
-a89ddb393d3d
+![image-20260809153340991](images/image-20260809153340991.png)
 
-```
+
 
 #### 退出容器
 
