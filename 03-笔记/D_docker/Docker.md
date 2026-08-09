@@ -1059,7 +1059,7 @@ docker stats
 ![image-20200617210554147](Docker.assets/image-20200617210554147.png)
 
 ```shell
-[root@192 home]# docker --help
+[root@YMP]:~]# docker --help
 
 Usage:	docker [OPTIONS] COMMAND
 
@@ -1152,15 +1152,13 @@ Commands:
 
 
 
-![image-20200617210932306](Docker.assets/image-20200617210932306.png)
+![image-20200617210932306](images/image-20200617210932306.png)
+
+![image-20200617211021003](images/image-20200617211021003.png)
+
+![image-20200617211039508](images/image-20200617211039508.png)
 
 
-
-![image-20200617211021003](Docker.assets/image-20200617211021003.png)
-
-
-
-![image-20200617211039508](Docker.assets/image-20200617211039508.png)
 
 #### 作业练习
 
