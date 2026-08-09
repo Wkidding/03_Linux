@@ -741,89 +741,36 @@ whiel true;do echo shenzai;sleep
 
 
 
-```shell
-# 运行一个
-[root@192 ~]# docker run -it centos /bin/bash
-
-[root@c2887d35c71d /]# [root@192 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-c2887d35c71d        centos              "/bin/bash"         57 seconds ago      Up 56 seconds                           vigorous_kare
-
-# 查看日志，由于没有运行脚本，所以啥也没显示
-[root@192 ~]# docker logs -f -t --tail 10 c2887d35c71d
-^C # ctrl+c退出
-
-# 运行centos里面加个脚本
-[root@192 ~]# docker run -d centos /bin/sh -c "while true;do echo shenzai;sleep 1;done"
-cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388
-
-[root@192 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
-cb6d7fbc3f27        centos              "/bin/sh -c 'while t…"   7 seconds ago       Up 6 seconds                            dreamy_almeida
-c2887d35c71d        centos              "/bin/bash"              3 minutes ago       Up 3 minutes                            vigorous_kare
-
-# 查看日志 发现隔一秒打印一条
-[root@192 ~]# docker logs -f -t --tail 10 cb6d7fbc3f27
-2020-06-17T12:02:11.293765084Z shenzai
-2020-06-17T12:02:12.297675608Z shenzai
-2020-06-17T12:02:13.301845582Z shenzai
-2020-06-17T12:02:14.304800996Z shenzai
-2020-06-17T12:02:15.307130238Z shenzai
-2020-06-17T12:02:16.310574235Z shenzai
-2020-06-17T12:02:17.312946923Z shenzai
-2020-06-17T12:02:18.314841295Z shenzai
-2020-06-17T12:02:19.317021705Z shenzai
-2020-06-17T12:02:20.319670013Z shenzai
-2020-06-17T12:02:21.322651649Z shenzai
-2020-06-17T12:02:22.325466918Z shenzai
-2020-06-17T12:02:23.327984704Z shenzai
-2020-06-17T12:02:24.329656919Z shenzai
-
-```
-
 #### (3) 查看正在运行的容器信息
 
 ```shell
-[root@192 ~]# docker inspect cb6d7fbc3f27
+[root@YMP]:~]#
+[root@YMP]:~]# docker inspect a34faa845435
 [
     {
-        # 容器的完整id
-        "Id": "cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388",
-        
-        # 创建时间
-        "Created": "2020-06-17T12:00:50.706906186Z",
-        
-        # 脚本位置
-        "Path": "/bin/sh",
-        
-        # 运行的脚本
-        "Args": [
-            "-c",
-            "while true;do echo shenzai;sleep 1;done"
-        ],
+        "Id": "a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff",
+        "Created": "2026-08-09T08:49:51.502794029Z",
+        "Path": "/bin/bash",
+        "Args": [],
         "State": {
-            "Status": "running", # 状态，正在运行
-            "Running": true,
+            "Status": "exited",
+            "Running": false,
             "Paused": false,
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 1909, # 父进程id
+            "Pid": 0,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2020-06-17T12:00:51.093617477Z",
-            "FinishedAt": "0001-01-01T00:00:00Z"
+            "StartedAt": "2026-08-09T08:49:51.736374968Z",
+            "FinishedAt": "2026-08-09T08:49:59.477319083Z"
         },
-        
-        # 来源镜像
-        "Image": "sha256:831691599b88ad6cc2a4abbd0e89661a121aff14cfa289ad840fd3946f274f1f",
-        "ResolvConfPath": "/var/lib/docker/containers/cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388/hostname",
-        "HostsPath": "/var/lib/docker/containers/cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388/hosts",
-        "LogPath": "/var/lib/docker/containers/cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388/cb6d7fbc3f27a064137d58282de97b97365dea2705211ebfbad642079cc1b388-json.log",
-        
-        
-        "Name": "/dreamy_almeida",
+        "Image": "sha256:eeb6ee3f44bd0b5103bb561b4c16bcb82328cfe5809ab675bb17ab3a16c517c9",
+        "ResolvConfPath": "/var/lib/docker/containers/a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff/hostname",
+        "HostsPath": "/var/lib/docker/containers/a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff/hosts",
+        "LogPath": "/var/lib/docker/containers/a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff/a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff-json.log",
+        "Name": "/competent_ptolemy",
         "RestartCount": 0,
         "Driver": "overlay2",
         "Platform": "linux",
@@ -831,8 +778,6 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
         "ProcessLabel": "",
         "AppArmorProfile": "",
         "ExecIDs": null,
-        
-        # 主机配置
         "HostConfig": {
             "Binds": null,
             "ContainerIDFile": "",
@@ -840,7 +785,7 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
                 "Type": "json-file",
                 "Config": {}
             },
-            "NetworkMode": "default",
+            "NetworkMode": "bridge",
             "PortBindings": {},
             "RestartPolicy": {
                 "Name": "no",
@@ -849,9 +794,13 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
             "AutoRemove": false,
             "VolumeDriver": "",
             "VolumesFrom": null,
+            "ConsoleSize": [
+                47,
+                124
+            ],
             "CapAdd": null,
             "CapDrop": null,
-            "Capabilities": null,
+            "CgroupnsMode": "host",
             "Dns": [],
             "DnsOptions": [],
             "DnsSearch": [],
@@ -870,10 +819,6 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
             "UsernsMode": "",
             "ShmSize": 67108864,
             "Runtime": "runc",
-            "ConsoleSize": [
-                0,
-                0
-            ],
             "Isolation": "",
             "CpuShares": 0,
             "Memory": 0,
@@ -881,10 +826,10 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
             "CgroupParent": "",
             "BlkioWeight": 0,
             "BlkioWeightDevice": [],
-            "BlkioDeviceReadBps": null,
-            "BlkioDeviceWriteBps": null,
-            "BlkioDeviceReadIOps": null,
-            "BlkioDeviceWriteIOps": null,
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
             "CpuPeriod": 0,
             "CpuQuota": 0,
             "CpuRealtimePeriod": 0,
@@ -894,14 +839,12 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
             "Devices": [],
             "DeviceCgroupRules": null,
             "DeviceRequests": null,
-            "KernelMemory": 0,
-            "KernelMemoryTCP": 0,
             "MemoryReservation": 0,
             "MemorySwap": 0,
             "MemorySwappiness": null,
             "OomKillDisable": false,
             "PidsLimit": null,
-            "Ulimits": null,
+            "Ulimits": [],
             "CpuCount": 0,
             "CpuPercent": 0,
             "IOMaximumIOps": 0,
@@ -916,7 +859,8 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
                 "/proc/timer_stats",
                 "/proc/sched_debug",
                 "/proc/scsi",
-                "/sys/firmware"
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
             ],
             "ReadonlyPaths": [
                 "/proc/bus",
@@ -926,140 +870,126 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
                 "/proc/sysrq-trigger"
             ]
         },
-        
-        # 其他配置
         "GraphDriver": {
             "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/3675586ebbd79cd72d2562a90c9380627a331c563724c0dac091f92600af4907-init/diff:/var/lib/docker/overlay2/7f79322e0f58d651a84a555dadd83d92537788172525945d3f538dd95dce336c/diff",
-                "MergedDir": "/var/lib/docker/overlay2/3675586ebbd79cd72d2562a90c9380627a331c563724c0dac091f92600af4907/merged",
-                "UpperDir": "/var/lib/docker/overlay2/3675586ebbd79cd72d2562a90c9380627a331c563724c0dac091f92600af4907/diff",
-                "WorkDir": "/var/lib/docker/overlay2/3675586ebbd79cd72d2562a90c9380627a331c563724c0dac091f92600af4907/work"
+                "LowerDir": "/var/lib/docker/overlay2/f801c152a90045b0d006f3e3974831332ef6943288901202403d348879cc6f20-init/diff:/var/lib/docker/overlay2/c70eac7eda591e4a308675a1fe5133dc785804aa3d0aa57c7cdcf0e89e42e188/diff",
+                "MergedDir": "/var/lib/docker/overlay2/f801c152a90045b0d006f3e3974831332ef6943288901202403d348879cc6f20/merged",
+                "UpperDir": "/var/lib/docker/overlay2/f801c152a90045b0d006f3e3974831332ef6943288901202403d348879cc6f20/diff",
+                "WorkDir": "/var/lib/docker/overlay2/f801c152a90045b0d006f3e3974831332ef6943288901202403d348879cc6f20/work"
             },
             "Name": "overlay2"
         },
-        
-        "Mounts": [], # 挂载
-        
-        # 基本配置
+        "Mounts": [],
         "Config": {
-            "Hostname": "cb6d7fbc3f27",
+            "Hostname": "a34faa845435",
             "Domainname": "",
             "User": "",
-            "AttachStdin": false,
-            "AttachStdout": false,
-            "AttachStderr": false,
-            "Tty": false,
-            "OpenStdin": false,
-            "StdinOnce": false,
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": true,
             "Env": [
                 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-            ], # 基本环境变量，这里没有Java
-            
-            # 基本命令
-            "Cmd": [
-                "/bin/sh",
-                "-c",
-                "while true;do echo shenzai;sleep 1;done"
             ],
-            "Image": "centos",
+            "Cmd": [
+                "/bin/bash"
+            ],
+            "Image": "centos:7",
             "Volumes": null,
             "WorkingDir": "",
             "Entrypoint": null,
             "OnBuild": null,
             "Labels": {
-                "org.label-schema.build-date": "20200611",
+                "org.label-schema.build-date": "20201113",
                 "org.label-schema.license": "GPLv2",
                 "org.label-schema.name": "CentOS Base Image",
                 "org.label-schema.schema-version": "1.0",
-                "org.label-schema.vendor": "CentOS"
+                "org.label-schema.vendor": "CentOS",
+                "org.opencontainers.image.created": "2020-11-13 00:00:00+00:00",
+                "org.opencontainers.image.licenses": "GPL-2.0-only",
+                "org.opencontainers.image.title": "CentOS Base Image",
+                "org.opencontainers.image.vendor": "CentOS"
             }
         },
-        
-        # 网卡，比如现在用的是桥接的网卡
         "NetworkSettings": {
             "Bridge": "",
-            "SandboxID": "4d701985d7e77aa153790b697b2f38a61e20555c224b7675e4bf650b82799882",
+            "SandboxID": "90668e61a51ea655614e1553a7978461cf207f116b6525a26e26c98a147f5b14",
+            "SandboxKey": "/var/run/docker/netns/90668e61a51e",
+            "Ports": {},
             "HairpinMode": false,
             "LinkLocalIPv6Address": "",
             "LinkLocalIPv6PrefixLen": 0,
-            "Ports": {},
-            "SandboxKey": "/var/run/docker/netns/4d701985d7e7",
             "SecondaryIPAddresses": null,
             "SecondaryIPv6Addresses": null,
-            "EndpointID": "8a6c71e2bafb19ca7dfd85445ccc4bef6d17467360a243d624089e676a24a018",
-            "Gateway": "172.17.0.1",
+            "EndpointID": "",
+            "Gateway": "",
             "GlobalIPv6Address": "",
             "GlobalIPv6PrefixLen": 0,
-            "IPAddress": "172.17.0.3",
-            "IPPrefixLen": 16,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
             "IPv6Gateway": "",
-            "MacAddress": "02:42:ac:11:00:03",
+            "MacAddress": "",
             "Networks": {
                 "bridge": {
                     "IPAMConfig": null,
                     "Links": null,
                     "Aliases": null,
-                    "NetworkID": "22b0fd2290ccbc4e066a75d3f01bd8bf32ee4352c5bbcfc9f911287219219571",
-                    "EndpointID": "8a6c71e2bafb19ca7dfd85445ccc4bef6d17467360a243d624089e676a24a018",
-                    "Gateway": "172.17.0.1",
-                    "IPAddress": "172.17.0.3",
-                    "IPPrefixLen": 16,
+                    "MacAddress": "",
+                    "NetworkID": "8f8aa1a6f97d4ce25fd5e2071f06db0742e4f555730d15b090a28a2f1aa58baf",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
                     "GlobalIPv6PrefixLen": 0,
-                    "MacAddress": "02:42:ac:11:00:03",
-                    "DriverOpts": null
+                    "DriverOpts": null,
+                    "DNSNames": null
                 }
             }
         }
     }
 ]
-
+[root@YMP]:~]#
 ```
 
 
-
-```shell
-# 停止正在疯狂输出的那个容器
-[root@192 ~]# docker stop cb6d7fbc3f27
-cb6d7fbc3f27
-```
 
 #### (4) 进入当前正在运行的容器
 
 ```shell
-# 我们通常容器都是使用后台方式运行的e
-
-docker exec -it 容器id bashSHELL
-
-# 测试
-[root@192 ~]# docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-c2887d35c71d        centos              "/bin/bash"         35 minutes ago      Up 35 minutes                           vigorous_kare
-[root@192 ~]# docker exec -it c2887d35c71d /bin/bash
-[root@c2887d35c71d /]# ls
-bin  etc   lib	  lost+found  mnt  proc  run   srv  tmp  var
-dev  home  lib64  media       opt  root  sbin  sys  usr
-[root@c2887d35c71d /]# ps -ef
-UID         PID   PPID  C STIME TTY          TIME CMD
-root          1      0  0 11:57 pts/0    00:00:00 /bin/bash
-root         14      0  0 12:32 pts/1    00:00:00 /bin/bash
-root         28     14  0 12:32 pts/1    00:00:00 ps -ef
-[root@c2887d35c71d /]# c2887d35c71d
-[root@c2887d35c71d /]# exit
-exit
-
-# 方式二
-[root@192 ~]# docker attach c2887d35c71d
-[root@c2887d35c71d /]# 
-
-# 区别
-# docker exec # 进入容器后开启一个新的终端，可以在里面操作(常用)
-# docker attach 进入容器正在执行的终端，不会启动新的进程
-
+## 进入容器后开启一个新的终端，可以在里面操作(常用)
+docker exec 
+## 进入容器正在执行的终端，不会启动新的进程
+docker attach 
 ```
 
+##### demo
 
+前置：运行容器
+
+![image-20260809170100121](images/image-20260809170100121.png)
+
+###### 方式一：使用`docker exec [CONTAINER ID]`
+
+![image-20260809170148814](images/image-20260809170148814.png)
+
+###### 方式二：使用`docker attach [CONTAINER ID]`
+
+![image-20260809170311716](images/image-20260809170311716.png)
+
+
+
+##### 🆚 核心区别对比
+
+| 特性         | `docker exec`                                                | `docker attach`                                              |
+| :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| **进程性质** | **创建并启动一个全新的进程**（如新的 `/bin/bash`）           | **连接到容器内已存在的、正在运行的主进程**（PID 1）          |
+| **终端模式** | 开启一个新的终端会话                                         | 复用容器当前的标准输入/输出（STDIN/STDOUT/STDERR）           |
+| **退出影响** | `exit` 退出时，**仅结束这个新进程**，容器本身**继续运行**（只要主进程还在） | `exit` 退出时，**会直接终止容器的主进程**，导致容器**停止运行** |
+| **常用场景** | 进入容器执行管理操作、调试、查看日志（**最常用**）           | 查看容器主进程的实时输出，或向主进程发送标准输入（较少用）   |
 
 #### (5) 从容器内拷贝文件到主机上
 
