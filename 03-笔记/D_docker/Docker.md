@@ -1430,7 +1430,58 @@ docker run -d \
 
 **Docker 镜像**（Image）是一个**只读的、轻量级的可执行软件包**，包含了运行某个应用程序所需的一切：代码、运行时环境、系统工具、库文件和配置设置。
 
-### 1.Docker 镜像 核心特性
+
+
+### 1. Docker 镜像的分层原理
+
+Docker 镜像之所以轻量、高效，核心在于其**分层存储**与**联合挂载**的设计。
+
+#### (1) 核心概念：镜像层 (Image Layer)
+
+Docker 镜像并非一个单一的大文件，而是由一系列**只读的层（Layer）** 堆叠而成。在 Dockerfile 中，**每执行一条指令（如 `RUN`, `COPY`, `ADD`），就会生成一个新的层**。每一层都记录了相对于上一层发生的变化（新增、修改或删除的文件），而不是整个文件的完整副本。
+
+
+
+#### (2) 关键技术：联合文件系统 (UnionFS)
+
+这是实现分层原理的基石。UnionFS 能将多个独立的目录（即各个镜像层）**联合挂载**到同一个挂载点上，从外部看起来就像一个完整的文件系统。
+
+可以这样理解：
+
+- **底层**：是多个只读的镜像层。
+- **顶层**：在容器运行时，会额外挂载一个可读写层。
+- **统一视图**：UnionFS 将这所有层叠加，为容器提供一个单一、完整的文件系统视图。
+
+Docker 在 Linux 上默认使用 **`overlay2`** 存储驱动来实现 UnionFS。
+
+
+
+#### (3)关键机制：写时复制 (Copy-on-Write, CoW)
+
+CoW 是分层存储能够高效运作的核心策略。
+
+- **读取文件**：当容器需要读取一个文件时，UnionFS 会**从上到下**在各层中查找，并返回找到的第一个版本。
+- **修改文件**：这是 CoW 发挥作用的关键。当容器需要修改一个存在于底层只读层的文件时，系统**不会**直接修改原文件（因为它是只读的）。相反，它会**先将该文件复制一份到容器顶层的可写层**，然后再对这个副本进行修改。
+
+**CoW 带来的巨大优势**：
+
+- **极致共享**：所有基于同一个镜像运行的容器，都共享底层的只读镜像层，**极大地节省了磁盘空间**。
+- **启动迅速**：创建容器时无需复制整个镜像，只需在只读层上添加一个薄薄的可写层，因此容器可以在**秒级启动**。
+- **镜像隔离**：每个容器都有自己的可写层，所有修改都只影响自己，互不干扰。
+
+
+
+#### 思考：为什么镜像要分层？
+
+**资源共享**是最根本的原因。
+
+- **磁盘共享**：多个基于相同基础镜像（如 `ubuntu:20.04`）构建的镜像，只需在磁盘上保存一份基础层。所有镜像共享这些只读层，大幅节省存储空间。
+- **内存共享**：当多个容器运行时，它们也共享内存中加载的同一份基础镜像层，降低内存开销。
+- **构建缓存**：分层使得构建过程可以缓存未变更的层，每次构建只需重新构建变化层，极大提速。
+
+
+
+### 2. Docker 镜像的核心特性
 
 - **只读性**：镜像是不可修改的。一旦构建完成，其内容就固定了。如果你要更新代码，需要重新构建一个新的镜像。
 - **分层存储**：镜像是分层构建的（比如系统层 -> 运行环境层 -> 应用代码层）。每一层都依赖于上一层。
@@ -1438,13 +1489,29 @@ docker run -d \
 
 
 
-### 2. Docker 镜像原理
+### 3. Docker 镜像的关键技术
 
 #### (1) **UnionFS（联合文件系统）**
 
 Union文件系统（UnionFS）是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下（unit several directories into a single virtual filesystem）。Union 文件系统是 Docker 镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像。
 
 **特性**：一次同时加载多个文件系统，但从外面看起来，只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录。
+
+UnionFS 是一种概念，具体实现由存储引擎完成。Docker 在 Linux 上支持多种引擎：
+
+| 存储引擎         | 特点                         | 推荐场景         |
+| :--------------- | :--------------------------- | :--------------- |
+| **overlay2**     | 当前默认，性能优异，稳定性高 | **生产环境首选** |
+| **aufs**         | 早期引擎，已被 overlay2 替代 | 遗留系统         |
+| **devicemapper** | 基于块设备，性能一般         | 不推荐           |
+| **btrfs/zfs**    | 需要特定文件系统支持         | 特殊环境         |
+
+在 Windows 上仅支持 **windowsfilter**（基于 NTFS）。
+
+所有引擎的核心任务都是实现：
+
+- **分层堆叠**：将多个只读层和容器可写层联合挂载
+- **写时复制（CoW）**：确保修改只影响当前容器，不破坏底层镜像
 
 
 
@@ -1464,6 +1531,13 @@ docker的镜像实际上由一层一层的文件系统组成，这种层级的�
 
 对于一个精简的OS，rootfs可以很小，只需要包含最基本的命令，工具和程序库就可以了，因为底层直接用Host的kernel，自己只需要提供rootfs就可以了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。
 
+##### bootfs 与 rootfs 的分工
+
+- **bootfs（引导文件系统）**：包含 bootloader 和内核。Docker 镜像最底层是 bootfs，但实际运行容器时，**直接使用宿主机的内核**，因此镜像中的 bootfs 只起到占位作用，启动后会被卸载。
+- **rootfs（根文件系统）**：位于 bootfs 之上，包含 `/dev`、`/proc`、`/bin`、`/etc` 等标准目录和文件。**这正是镜像体积小的原因**：Docker 镜像只打包 rootfs，不包括内核。而虚拟机镜像必须包含完整的内核和驱动，所以动辄数个 GB。
+
+**结论**：不同 Linux 发行版（Ubuntu、CentOS 等）的 bootfs 基本一致（都是 Linux 内核），因此可以共享宿主机内核，镜像只需提供各自的 rootfs 即可。
+
 
 
 #### (3) 分层的理解
@@ -1476,97 +1550,38 @@ docker的镜像实际上由一层一层的文件系统组成，这种层级的�
 
 最大的好处，我觉得莫过于是资源共享了！比如有多个镜像都从相同的Base镜像构建而来，那么宿主机只需在磁盘上保留一份base镜像，同时内存中也只需要加载一份base镜像，这样就可以为所有的容器服务了，而且镜像的每一层都可以被共享。
 
-##### 实际下载中的分层信息
+##### 实际验证：如何查看镜像分层？
 
-查看镜像分层的方式可以通过`docker image inspect`命令！
+查看镜像分层的方式可以通过`docker image inspect`命令
 
 ```shell
-[root@devbase2]:~# docker image inspect redis:latest
-[
-    {
-        "Id": "sha256:0458cdd27215d21a7c7a2772591ed8521fbb649cb5648ee9b4f6c8f4c26eefed",
-        "RepoTags": [
-            "redis:latest"
-        ],
-        "RepoDigests": [
-            "redis@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366"
-        ],
-        "Parent": "",
-        "Comment": "buildkit.dockerfile.v0",
-        "Created": "2026-08-05T00:44:08.948018931Z",
-        "DockerVersion": "",
-        "Author": "",
-        "Config": {
-            "Hostname": "",
-            "Domainname": "",
-            "User": "",
-            "AttachStdin": false,
-            "AttachStdout": false,
-            "AttachStderr": false,
-            "ExposedPorts": {
-                "6379/tcp": {}
-            },
-            "Tty": false,
-            "OpenStdin": false,
-            "StdinOnce": false,
-            "Env": [
-                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-                "REDIS_VERSION=8.10.0"
-            ],
-            "Cmd": [
-                "redis-server"
-            ],
-            "Image": "",
-            "Volumes": null,
-            "WorkingDir": "/data",
-            "Entrypoint": [
-                "docker-entrypoint.sh"
-            ],
-            "OnBuild": null,
-            "Labels": null
-        },
-        "Architecture": "amd64",
-        "Os": "linux",
-        "Size": 145547029,
-        "GraphDriver": {
-            "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/77a4276a286dae9a0190a3a2c91a739a36457a32e716d334bd866c0912bb84a1/diff:/var/lib/docker/overlay2/44864c3e8dc5dd3042c6a179ca1718e3d3f4ed19a6644485008400a296e10988/diff:/var/lib/docker/overlay2/f681766bc61310821f96fae74cd17be52fcbf3656654d648b1fe80bb9e64ce4b/diff:/var/lib/docker/overlay2/5e713b96951480a8eaeed8799e400360db829da2d5034e0686ff4eedd47c561f/diff:/var/lib/docker/overlay2/1f4ac1be77ca57a32dee777b0f837265bcab67deb118ea4c64ca6868aa99fdc1/diff:/var/lib/docker/overlay2/bb944987aa983b76463ed0c66836ba1bc4b3fabb02f187c3b021452c06c97b91/diff",
-                "MergedDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/merged",
-                "UpperDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/diff",
-                "WorkDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/work"
-            },
-            "Name": "overlay2"
-        },
-        "RootFS": {
-            "Type": "layers",
-            "Layers": [
-                "sha256:6f94328331290cbd81edab450664d42da7b64c191416c9346cd5d28c84f76035",
-                "sha256:a1a93cf4dc552305584d63e70a5538ab41929006a8297650351162aced5c3a78",
-                "sha256:6229e36baf52216ff41734dfd117da674eb936605e442f17a5edc1e0e5223dcb",
-                "sha256:46136138773290984bdf0e3be9725e55af38361c6e289c77280407740942366b",
-                "sha256:adc96d03864d0398007f8ed16d0b8f06bb5922e492c90f2b0511c9a089792d4f",
-                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:65a3455f3d5d8d30b904040049ffcf4ce83a357da114c52c398ae0131c44b6d0"
-            ]
-        },
-        "Metadata": {
-            "LastTagTime": "0001-01-01T00:00:00Z"
-        }
-    }
-]
-[root@devbase2]:~#
+# 查看 redis 镜像的分层
+docker image inspect redis:latest
 
+# 输出中会包含 "RootFS" 字段，其中 "Layers" 列表显示每一层的 SHA256 哈希值
 ```
 
 ![image-20260811063851985](images/image-20260811063851985.png)
 
 ![image-20260811063912704](images/image-20260811063912704.png)
 
+此外，还可以使用 `docker history` 查看镜像构建历史，更直观地看到每一层对应的 Dockerfile 指令：
+
+```shell
+docker history redis:latest
+```
+
+![image-20260811070921968](images/image-20260811070921968.png)
 
 
-##### 理解
+
+##### 深入理解
 
 所有的 Docker 镜像都起始于一个基础镜像层，当进行修改或增加新的内容时，就会在当前镜像层之上，创建新的镜像层。
+
+>  层与文件的关系
+>
+> 每一层本质上是一个**文件变更集**（新增、修改、删除的文件）。当多层叠加时，UnionFS 将它们联合挂载，对外呈现为一个统一的文件系统视图。**如果上层存在与下层同名的文件，上层文件会完全覆盖下层文件**（即“屏蔽”效果）。
 
 举一个简单的例子，假如基于 Ubuntu Linux 16.04 创建一个新的镜像，这就是新镜像的第一层；如果在该镜像中添加 Python 包，就会在基础镜像层之上创建第二个镜像层；如果继续添加一个安全补丁，就会创建第三个镜像层。
 
@@ -1590,12 +1605,11 @@ Docker 通过存储引擎（新版本采用快照机制）的方式来实现镜�
 
 Linux 上可用的存储引擎有 AUFS、Overlay2、Device Mapper、Btrfs 以及 ZFS。顾名思义，每种存储引擎都基于 Linux 中对应的文件系统或者块设备技术，并且每种存储引擎都有其独有的性能特点。
 
-Docker 在 Windows 上仅支持 windowsfilter 一种存储引擎，该引擎基于 NTFS 文件系统之上实现了分层和 CoW[1]。
+Docker 在 Windows 上仅支持 windowsfilter 一种存储引擎，该引擎基于 NTFS 文件系统之上实现了分层和 CoW。
 
 下图展示了与系统显示相同的三层镜像。所有镜像层堆叠并合并，对外提供统一的视图
 
 ![image-20260811064942737](images/image-20260811064942737.png)
-
 
 
 
@@ -1608,7 +1622,22 @@ Docker镜像都是只读的，当容器启动时，一个新的可写层被加�
 
 
 
-### commit提交镜像
+### 4. 总结要点
+
+> 1. **镜像 = 只读层堆叠**；**容器 = 镜像 + 可写层**。
+> 2. **分层共享** → 省空间、省内存、加速构建。
+> 3. **rootfs 不含内核** → 镜像体积小（几百 MB vs 虚拟机数 GB）。
+> 4. **上层文件覆盖下层** → 实现版本更新。
+> 5. **存储引擎**（如 overlay2）负责联合挂载和写时复制。
+> 6. **验证分层**：`docker image inspect` 和 `docker history`。
+
+
+
+
+
+
+
+### 5. `commit `提交镜像
 
 ```shell
 docker commit # 提交容器成为一个新的副本
@@ -1649,6 +1678,44 @@ docker commit -a="paidaxing" -m="add webapps app" 当前容器的id tomcat02:1.0
 > 到这里算是入门了
 >
 > 接下来三个部分是docker的精髓
+
+
+
+
+
+
+
+
+
+
+
+1. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
