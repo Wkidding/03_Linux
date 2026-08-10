@@ -1,6 +1,6 @@
 # Docker
 
-![image-20200606203315597](Docker.assets/image-20200606203315597.png)
+![image-20200606203315597](images/image-20200606203315597.png)
 
 ## 参考资料
 
@@ -276,7 +276,7 @@ docker run hello-world
 
 run的运行流程图
 
-![image-20200616161441669](Docker.assets/image-20200616161441669.png)
+![image-20200616161441669](images/image-20200616161441669.png)
 
 ### 9、查看下载的镜像image
 
@@ -305,14 +305,14 @@ Docker是如何工作的？
 
 Docker是一个Client-Server结构的系统，Docker的守护进程在主机上。通过Socket从客户端访问。DockerServer接受到Docker-Client的指令
 
-![image-20200616162107363](Docker.assets/image-20200616162107363.png)
+![image-20200616162107363](images/image-20200616162107363.png)
 
 Docker为什么比VM快？
 
 1. Docker有着比虚拟机更少的抽象层
 2. docker主要用的是宿主机的内核，vm需要Guest OS
 
-![image-20200616162302653](Docker.assets/image-20200616162302653.png)
+![image-20200616162302653](images/image-20200616162302653.png)
 
 因此新建一个容器的时候，docker不需要像虚拟机一样重新加载一个操作系统内核，避免引导
 
@@ -1056,7 +1056,7 @@ docker stats
 
 #### 小结
 
-![image-20200617210554147](Docker.assets/image-20200617210554147.png)
+![image-20200617210554147](images/image-20200617210554147.png)
 
 ```shell
 [root@YMP]:~]# docker --help
