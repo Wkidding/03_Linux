@@ -1292,19 +1292,13 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 ##### (2) 部署tomcat
 
-![image-20200618100551587](Docker.assets/image-20200618100551587.png)
-
-【视频书签：https://www.bilibili.com/video/BV1og4y1q7M4?p=15】
-
-【20200618毕竟生产力工具，加油搞，这周一定刷完！！每次关机都要重连，麻烦(*╹▽╹*)】
-
-
+![image-20200618100551587](images/image-20200618100551587.png)
 
 在docker hub上查看版本号和使用方法
 
-![image-20200618100319796](Docker.assets/image-20200618100319796.png)
+![image-20200618100319796](images/image-20200618100319796.png)
 
-官方文档一定要翻烂，超多版本，我的天呐~
+
 
 ###### 官方方法
 
@@ -1313,75 +1307,62 @@ docker run -it --rm tomcat:9.0
 
 # docker run 可以不用pull，能自动下载
 # -it 直接进去运行
-# --rm 是什么意思？入门的意思？
 # 我们之前的启动都是后台，停止了容器之后，容器还是可以查到
-# 写了--rm，类似阅后即焚模式，用完即删除，这种通常用来测试
-
-# 最后冒号查好的版本号
+# --rm，用完即删除，这种通常用来测试
+# 冒号后跟版本号
 ```
 
+![image-20260810221311158](images/image-20260810221311158.png)
 
+已经启动，此时`ctrl+c `退出
 
-![image-20200618101811914](Docker.assets/image-20200618101811914.png)
-
-![image-20200618101849917](Docker.assets/image-20200618101849917.png)
-
-ctrl+c退出
+![image-20260810221407327](images/image-20260810221407327.png)
 
 ```shell
+## 查看运行的容器历史，但是未看到刚刚运行的tomcat
+## 这个操作印证 -rm 是阅后即焚模式，退出后容器会删除，镜像不会删除。
 docker ps -a
 ```
 
-![image-20200618102022167](Docker.assets/image-20200618102022167.png)
+![image-20260810221451381](images/image-20260810221451381.png)
 
-可以看到并没有tomcat，印证阅后即焚模式，容器会删除，镜像不会删除
 
-平时不建议这样搞
 
 ###### 正常方法
 
 ```shell
-docker pull tomcat:9.0 # 之前下过了，应该不用下了，这里老师讲错了
-```
-
-
-
-![image-20200618102544564](Docker.assets/image-20200618102544564.png)
-
-```shell
+docker pull tomcat:9.0 
 # 启动运行，应该加上版本号
-docker run -d -p 3355:8080 --name tomcat01 tomcat
+docker run -d -p 3355:8080 --name tomcat01 tomcat:9.0 
 ```
 
-![image-20200618102837397](Docker.assets/image-20200618102837397.png)
+![image-20260810221707890](images/image-20260810221707890.png)
 
-
+![image-20260810221722786](images/image-20260810221722786.png)
 
 ```shell
 # 进入容器
 docker exec -it tomcat01 /bin/bash
 ```
 
-![image-20200618103109004](Docker.assets/image-20200618103109004.png)
+![image-20260810221801055](images/image-20260810221801055.png)
 
 发现问题
 
 1. linux命令少了
 2. 没有webapps
 
-![image-20200618103407205](Docker.assets/image-20200618103407205.png)
+![image-20260810221904970](images/image-20260810221904970.png)
 
 这是阿里云镜像的原因：默认使用最小镜像，所有不必要的都剔除了，保证最小可运行环境
 
-![image-20200618103848104](Docker.assets/image-20200618103848104.png)
+![image-20260810222225172](images/image-20260810222225172.png)
 
-再次找到结构
+![image-20260810222346564](images/image-20260810222346564.png)
 
-![image-20200618104052242](Docker.assets/image-20200618104052242.png)
+tong'gu哦浏览去访问，在浏览器中输入：http://192.168.88.101:3355/
 
-在浏览器中输入：http://192.168.147.132:3355/
-
-![image-20200618103958168](Docker.assets/image-20200618103958168.png)
+![image-20260810222453421](images/image-20260810222453421.png)
 
 思考问题：我们以后部署项目，如果每次都要进入容器是不是身份麻烦？我要是可以在容器外部提供一个映射路径，webapps，我们在外部放置项目，就自动同步到内部就好了！
 
@@ -1409,10 +1390,7 @@ docker stats
 
 ![image-20200618111713885](Docker.assets/image-20200618111713885.png)
 
-```shell
-# 先感觉stop一下
-docker stop ba18713ca536
-```
+
 
 
 
