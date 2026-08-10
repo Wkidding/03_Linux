@@ -1628,81 +1628,76 @@ docker history redis:latest
 
 ### 5. `commit `提交镜像
 
-```shell
-docker commit # 提交容器成为一个新的副本
-docker commit -m="提交的描述信息" -a="作者" 容器id 目标镜像名：[TAG]
-```
+`docker commit` 提交容器成为一个新的副本
 
 ```shell
-docker images
-docker run -it -p 8080:8080 tomcat
+## 命令和git原理类似
+docker commit -m="提交的描述信息" -a="作者" [容器id] 目标镜像名:[TAG]
+
+
+补充说明
+docker commit 命令用于将容器的当前状态（包括所有文件系统修改）保存为一个新的镜像。它的典型使用场景是：
+
+临时调试：在容器中手动安装软件、修改配置后，保存为镜像供后续使用
+
+快速原型：快速保存实验性环境，而不必编写 Dockerfile
 ```
 
-![image-20200618154457286](Docker.assets/image-20200618154457286.png)
-
-这是一个前台程序
-
-![image-20200618154736475](Docker.assets/image-20200618154736475.png)
-
-将webapps.dist里面所有的文件拷贝到webapps里面，其中-r必须有，表示目录递归拷贝
-
-![image-20200618154943194](Docker.assets/image-20200618154943194.png)
 
 
-
-![image-20200618155750591](Docker.assets/image-20200618155750591.png)
+实战测试
+1、启动一个默认的tomcat
 
 ```shell
-docker commit -a="paidaxing" -m="add webapps app" 当前容器的id tomcat02:1.0
+# 启动运行，应该加上版本号
+docker run -d -p 3355:8080 --name tomcatbase tomcat:9.0 
 ```
 
-![image-20200618160425265](Docker.assets/image-20200618160425265.png)
-
-发现新的版本，比之前的大了一些，因为里面记录了我们的改动
-
-> 如果想保存当前容器的状态，可以通过commit提交，获得一个镜像
->
-> 好比我们以前学习VM的时候的快照
->
-> 到这里算是入门了
->
-> 接下来三个部分是docker的精髓
+![image-20260811074201770](images/image-20260811074201770.png)
 
 
 
+2、进入容器（另开一个SESS进入），发现这个默认的tomcat 是没有webapps应用，镜像的原因，官方的镜像默认 webapps下面是没有文件的！
+
+```shell
+# 进入容器
+docker exec -it tomcatbase /bin/bash
+```
+
+发现问题
+
+1. linux命令少了
+2. 没有webapps
+
+![image-20260811074313000](images/image-20260811074313000.png)
+
+这是阿里云镜像的原因：默认使用最小镜像，所有不必要的都剔除了，保证最小可运行环境
+
+![image-20260811074431755](images/image-20260811074431755.png)
 
 
 
+3、自己拷贝进去基本的文件
+
+![image-20260811074633842](images/image-20260811074633842.png)
 
 
 
+4、将操作过的容器通过commit提交为一个镜像！我们以后就使用我们修改过的镜像即可，这就是我们自己的一个修改的镜像
 
+```shell
+docker commit -a="duzxlin" -m="add webapps app" e431250ec58c mytomcat:1.0
+```
 
-1. 
+此时发现，自己打包的tomca体积比官方提供的体积大。这是由于我们在官方的保本上做了一些操作（第三步的拷贝基础文件），记录了手动的操作，因此打包后体积会大一些。
 
-
-
-
-
-
-
-
-
+![image-20260811074900288](images/image-20260811074900288.png)
 
 
 
+通过浏览去访问，在浏览器中输入：http://192.168.88.101:3355/
 
-
-
-
-
-
-
-
-
-
-
-
+![image-20260810222453421](images/image-20260810222453421.png)
 
 
 
