@@ -1364,74 +1364,7 @@ tong'gu哦浏览去访问，在浏览器中输入：http://192.168.88.101:3355/
 
 ![image-20260810222453421](images/image-20260810222453421.png)
 
-思考问题：我们以后部署项目，如果每次都要进入容器是不是身份麻烦？我要是可以在容器外部提供一个映射路径，webapps，我们在外部放置项目，就自动同步到内部就好了！
 
-docker容器 tomcat+网站 
-
-docker mysql
-
-##### 部署es+kibana
-
-![image-20200618104950722](Docker.assets/image-20200618104950722.png)
-
-
-
-```shell
-# es 暴露的端口很多
-# es 十分耗内存
-# es 的数据一般需要放置到安全目录！挂载
-
-# 启动 elasticsearch
-$ docker run -d --name elasticsearch01 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.6.2
-
-# 查看内存占用情况
-docker stats
-```
-
-![image-20200618111713885](Docker.assets/image-20200618111713885.png)
-
-
-
-
-
-![image-20200618105057785](Docker.assets/image-20200618105057785.png)
-
-
-
-```shell
-# 通过 -e 限制内存
-$ docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS=“-Xms64m -Xmx512m” elasticsearch:7.6.2
-```
-
-![image-20200618113018622](Docker.assets/image-20200618113018622.png)
-
-没成功啊，SEI能告诉我为啥！！
-
-```shell
-docker run -d --name elasticsearch02 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms64m -Xmx512m" elasticsearch:7.6.2
-```
-
->py0003null大佬:
->“ES_JAVA_OPTS=-Xms64m -Xmx512m” 
->
->py0003null大佬:
->引号提前试试
-
-原因是引号！！你没觉得怪怪的嘛
-
-![image-20200618115302656](Docker.assets/image-20200618115302656.png)
-
-此时查看stats，发现内存占用在控制范围内
-
-![image-20200618115149971](Docker.assets/image-20200618115149971.png)
-
-ctrl + C退出，记得stop
-
-![image-20200618115921069](Docker.assets/image-20200618115921069.png)
-
-##### 思考：用kibana链接elasticsearch
-
-![image-20200618113556445](Docker.assets/image-20200618113556445.png)
 
 ##### (3) 拉取centos7
 
@@ -1443,6 +1376,8 @@ Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
 Status: Downloaded newer image for centos:7
 docker.io/library/centos:7
 ```
+
+部署前面已经实践过
 
 ##### (4)拉取orcale19c
 
@@ -1461,42 +1396,7 @@ registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 [root@devbase2 ~]#
 ```
 
-
-
-### 5、可视化
-
-- portainer(先用这个)
-- Rancher(CI/CD时用)
-
-#### portainer
-
-Docker图像化界面管理工具，提供一个后台面板供我们操作！
-
-```shell
-docker run -d -p 8088:9000 --restart=always -v /var/run/docker.sock:/var/run/docker --privileged=true portainer/portainer
-```
-
-![image-20200618114542622](Docker.assets/image-20200618114542622.png)
-
-访问外网8088
-
-![image-20200618114902169](Docker.assets/image-20200618114902169.png)
-
-用户名
-
-密码 
-
-![image-20200618134706491](Docker.assets/image-20200618134706491.png)
-
-【中午吃饭重连了一下，失败，不知道发生了啥】
-
-![image-20200618135424706](Docker.assets/image-20200618135424706.png)
-
-![image-20200618135450037](Docker.assets/image-20200618135450037.png)
-
-【平时不会用这个，好吧，先往下】
-
-### 
+部署参考mysql
 
 
 
