@@ -1259,46 +1259,36 @@ security features and capabilities please refer to
 
 ![image-20260810220342632](images/image-20260810220342632.png)
 
-
-
-
-
-
-
 ```shell
-[root@192 home]# docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
-38dbf7bdcaef        nginx               "/docker-entrypoint.…"   21 minutes ago      Up 21 minutes       0.0.0.0:3344->80/tcp   nginx01
-
-# 进入容器
-[root@192 home]# docker exec -it nginx01 /bin/bash
-
-# 查一下nginx在哪
-root@38dbf7bdcaef:/# whereis nginx
+[root@devbase2]:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                   CREATED         STATUS         PORTS                                   NAMES
+75e00c1d4537   nginx     "/docker-entrypoint.…"   6 minutes ago   Up 6 minutes   0.0.0.0:3344->80/tcp, :::3344->80/tcp   nginx01
+[root@devbase2]:~#
+[root@devbase2]:~# docker exec -it nginx01 /bin/bash
+root@75e00c1d4537:/# whereis nginx
 nginx: /usr/sbin/nginx /usr/lib/nginx /etc/nginx /usr/share/nginx
-
-# 到这个目录
-root@38dbf7bdcaef:/# cd /etc/nginx
-root@38dbf7bdcaef:/etc/nginx# ls
-conf.d		koi-utf  mime.types  nginx.conf   uwsgi_params
-fastcgi_params	koi-win  modules     scgi_params  win-utf
-
-# 退出
-root@38dbf7bdcaef:/etc/nginx# exit
+root@75e00c1d4537:/# cd /etc/nginx
+root@75e00c1d4537:/etc/nginx# ls
+conf.d  fastcgi_params  mime.types  modules  nginx.conf  scgi_params  uwsgi_params
+root@75e00c1d4537:/etc/nginx# exit
 exit
-
-# 停止
-[root@192 home]# docker stop 38dbf7bdcaef
-38dbf7bdcaef
-
+[root@devbase2]:~#
+[root@devbase2]:~#  docker stop 75e00c1d4537
+75e00c1d4537
+[root@devbase2]:~#
+[root@devbase2]:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@devbase2]:~#
 
 ```
 
+关闭Nginx服务后，再次刷新网页，服务关闭
 
-
-再次刷新网页，服务关闭
+![image-20260810220712063](images/image-20260810220712063.png)
 
 思考问题：每次改动nginx配置文件，都需要进入容器内部，十分麻烦，要是可以在容器外部提供一个映射路径，达到在容器修改文件名，容器内部就可以自动修改？-v 数据卷技术！
+
+
 
 ##### (2) 部署tomcat
 
