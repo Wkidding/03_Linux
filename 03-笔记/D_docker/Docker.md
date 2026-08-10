@@ -1452,15 +1452,25 @@ Union文件系统（UnionFS）是一种分层、轻量级并且高性能的文�
 
 docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。
 
-bootfs(boot file system)主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。
+**bootfs(boot file system)**主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。
 
-rootfs(root file system)，在bootfs之上。包含的就是典型Linux系统中的/dev,/proc,/bin,/etc等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，Centos等等。
+**rootfs(root file system)**，在bootfs之上。包含的就是典型Linux系统中的/dev,/proc,/bin,/etc等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，Centos等等。
 
-![image-20200618140242423](Docker.assets/image-20200618140242423.png)
+![image-20200618140242423](images/image-20200618140242423.png)
 
-bootfs：boot file system
+平时我们安装虚拟机的CentOS都是好几个G，为什么Docker image才200M？
 
-rootfs：root file system
+![image-20260811062924901](images/image-20260811062924901.png)
+
+对于一个精简的OS，rootfs可以很小，只需要包含最基本的命令，工具和程序库就可以了，因为底层直接用Host的kernel，自己只需要提供rootfs就可以了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。
+
+
+
+
+
+
+
+
 
 ![image-20200618140907894](Docker.assets/image-20200618140907894.png)
 
