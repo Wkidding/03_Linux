@@ -1430,7 +1430,7 @@ docker run -d \
 
 **Docker 镜像**（Image）是一个**只读的、轻量级的可执行软件包**，包含了运行某个应用程序所需的一切：代码、运行时环境、系统工具、库文件和配置设置。
 
-### 1. 核心特性
+### 1.Docker 镜像 核心特性
 
 - **只读性**：镜像是不可修改的。一旦构建完成，其内容就固定了。如果你要更新代码，需要重新构建一个新的镜像。
 - **分层存储**：镜像是分层构建的（比如系统层 -> 运行环境层 -> 应用代码层）。每一层都依赖于上一层。
@@ -1438,9 +1438,9 @@ docker run -d \
 
 
 
-### 2. 原理
+### 2. Docker 镜像原理
 
-#### **UnionFS（联合文件系统）**
+#### (1) **UnionFS（联合文件系统）**
 
 Union文件系统（UnionFS）是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下（unit several directories into a single virtual filesystem）。Union 文件系统是 Docker 镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像。
 
@@ -1448,7 +1448,7 @@ Union文件系统（UnionFS）是一种分层、轻量级并且高性能的文�
 
 
 
-#### **Docker镜像加载原理**
+#### (2) **Docker镜像加载原理**
 
 docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。
 
@@ -1466,7 +1466,95 @@ docker的镜像实际上由一层一层的文件系统组成，这种层级的�
 
 
 
+#### (3) 分层的理解
 
+我们可以去下载一个镜像，注意观察下载的日志输出，可以看到是一层一层的在下载！
+
+![image-20260811063646749](images/image-20260811063646749.png)
+
+**思考：为什么Docker镜像要采用这种分层的结构呢？**
+
+最大的好处，我觉得莫过于是资源共享了！比如有多个镜像都从相同的Base镜像构建而来，那么宿主机只需在磁盘上保留一份base镜像，同时内存中也只需要加载一份base镜像，这样就可以为所有的容器服务了，而且镜像的每一层都可以被共享。
+
+查看镜像分层的方式可以通过`docker image inspect`命令！
+
+```shell
+[root@devbase2]:~# docker image inspect redis:latest
+[
+    {
+        "Id": "sha256:0458cdd27215d21a7c7a2772591ed8521fbb649cb5648ee9b4f6c8f4c26eefed",
+        "RepoTags": [
+            "redis:latest"
+        ],
+        "RepoDigests": [
+            "redis@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366"
+        ],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-05T00:44:08.948018931Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "6379/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "REDIS_VERSION=8.10.0"
+            ],
+            "Cmd": [
+                "redis-server"
+            ],
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "/data",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 145547029,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/77a4276a286dae9a0190a3a2c91a739a36457a32e716d334bd866c0912bb84a1/diff:/var/lib/docker/overlay2/44864c3e8dc5dd3042c6a179ca1718e3d3f4ed19a6644485008400a296e10988/diff:/var/lib/docker/overlay2/f681766bc61310821f96fae74cd17be52fcbf3656654d648b1fe80bb9e64ce4b/diff:/var/lib/docker/overlay2/5e713b96951480a8eaeed8799e400360db829da2d5034e0686ff4eedd47c561f/diff:/var/lib/docker/overlay2/1f4ac1be77ca57a32dee777b0f837265bcab67deb118ea4c64ca6868aa99fdc1/diff:/var/lib/docker/overlay2/bb944987aa983b76463ed0c66836ba1bc4b3fabb02f187c3b021452c06c97b91/diff",
+                "MergedDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/merged",
+                "UpperDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/diff",
+                "WorkDir": "/var/lib/docker/overlay2/c49ca3a466638f31e88f724bed455dbdd59d8adb636126e0b71b61e9a9fcaa31/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:6f94328331290cbd81edab450664d42da7b64c191416c9346cd5d28c84f76035",
+                "sha256:a1a93cf4dc552305584d63e70a5538ab41929006a8297650351162aced5c3a78",
+                "sha256:6229e36baf52216ff41734dfd117da674eb936605e442f17a5edc1e0e5223dcb",
+                "sha256:46136138773290984bdf0e3be9725e55af38361c6e289c77280407740942366b",
+                "sha256:adc96d03864d0398007f8ed16d0b8f06bb5922e492c90f2b0511c9a089792d4f",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:65a3455f3d5d8d30b904040049ffcf4ce83a357da114c52c398ae0131c44b6d0"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]
+[root@devbase2]:~#
+
+```
 
 
 
