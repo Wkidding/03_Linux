@@ -1160,8 +1160,6 @@ For more help on how to use Docker, head to https://docs.docker.com/go/guides/
 
 ##### (1) 部署Nginx
 
-![image-20200618100621199](Docker.assets/image-20200618100621199.png)
-
 ```shell
 # 官网搜索nginx，可以看到帮助文档
 
@@ -1188,12 +1186,16 @@ Digest: sha256:8541484afbc9c8a5a8a99b379568ebbc957f658583ec9448fc43104229c03cf8
 Status: Downloaded newer image for nginx:latest
 docker.io/library/nginx:latest
 
-
 # 查看镜像
-[root@192 home]# docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-centos              latest              831691599b88        13 hours ago        215MB
-nginx               latest              2622e6cca7eb        7 days ago          132MB
+[root@devbase2]:~# docker images
+REPOSITORY                                          TAG       IMAGE ID       CREATED        SIZE
+nginx                                               latest    5253dc86cc93   5 days ago     161MB
+tomcat                                              9.0       b326c1d164e9   6 days ago     422MB
+mysql                                               latest    d236310860c6   13 days ago    945MB
+hello-world                                         latest    e2ac70e7319a   4 months ago   10.1kB
+centos                                              7         eeb6ee3f44bd   4 years ago    204MB
+registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle   19c       7b5eb4597688   6 years ago    6.61GB
+[root@devbase2]:~#
 
 # 运行测试
 # -d 后台运行，--name 命名，-p 暴露端口，3344服务器、宿主机的端口，容器内部端口
@@ -1203,49 +1205,65 @@ nginx               latest              2622e6cca7eb        7 days ago          
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
 38dbf7bdcaef        nginx               "/docker-entrypoint.…"   7 seconds ago       Up 6 seconds        0.0.0.0:3344->80/tcp   nginx01
 
-# 使用3344可以访问成功
-[root@192 home]# curl localhost:3344
+```
+
+![image-20260810215934108](images/image-20260810215934108.png)
+
+###### a) 本机使用curl 直接访问
+
+```shell
+## 使用3344端口访问
+[root@devbase2]:~# curl localhost:3344
 <!DOCTYPE html>
 <html>
 <head>
 <title>Welcome to nginx!</title>
 <style>
-    body {
-        width: 35em;
-        margin: 0 auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
-    }
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
 </style>
 </head>
 <body>
 <h1>Welcome to nginx!</h1>
-<p>If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.</p>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy,
+API gateway, load balancer, content cache, or other features.</p>
 
 <p>For online documentation and support please refer to
-<a href="http://nginx.org/">nginx.org</a>.<br/>
-Commercial support is available at
-<a href="http://nginx.com/">nginx.com</a>.</p>
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
 
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
-
 ```
+
+![image-20260810220000315](images/image-20260810220000315.png)
+
+###### b) 使用公网访问
 
 端口暴露
 
 ![image-20200617212310709](Docker.assets/image-20200617212310709.png)
 
-可以公网访问
+服务器地址
 
-找到服务器地址
+![image-20260810220315730](images/image-20260810220315730.png)
 
-![image-20200617213213721](Docker.assets/image-20200617213213721.png)
+浏览器输入 192.168.88.101:3344/
 
-浏览器输入 192.168.147.132:3344/
+![image-20260810220342632](images/image-20260810220342632.png)
 
-![image-20200617213142079](Docker.assets/image-20200617213142079.png)
+
+
+
+
+
 
 ```shell
 [root@192 home]# docker ps
