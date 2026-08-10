@@ -1396,9 +1396,33 @@ registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 [root@devbase2 ~]#
 ```
 
-部署参考mysql
+部署
 
+```shell
+docker run -d \
+  --name oracle19c \
+  --restart=unless-stopped \
+  -p 1521:1521 \
+  -p 5500:5500 \
+  -e ORACLE_SID=ORCLCDB \
+  -e ORACLE_PDB=ORCLPDB \
+  -e ORACLE_PWD=oracle \
+  -e ORACLE_CHARACTERSET=AL32UTF8 \
+  registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+  
+ ## 进入
+ docker exec -it oracle19c /bin/bash
+ 
+ ## 切换到 Oracle 用户并设置环境变量 (重要)，有的进入容器后，直接就是oracle用户，直接可以source
+ ## su - oracle
+ source /home/oracle/.bash_profile
+ 
+ 
+ ## 进入数据库
+ sqlplus / as sysdba
+```
 
+![image-20260810224129389](images/image-20260810224129389.png)
 
 ## 四、Docker镜像
 
