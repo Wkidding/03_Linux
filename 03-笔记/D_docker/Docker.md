@@ -114,12 +114,12 @@ Docker通过隔离机制，可以将服务器利用到极致。
 3. 远程链接远程服务器
 
 ```
-[root@YMP ~]# cd /
-[root@YMP /]# ls /
+[root@devbase2 ~]# cd /
+[root@devbase2 /]# ls /
 bin  boot  data  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-[root@YMP /]# uname -r
+[root@devbase2 /]# uname -r
 3.10.0-1160.119.1.el7.x86_64
-[root@YMP /]# cat /etc/os-release
+[root@devbase2 /]# cat /etc/os-release
 NAME="CentOS Linux"
 VERSION="7 (Core)"
 ID="centos"
@@ -136,7 +136,7 @@ CENTOS_MANTISBT_PROJECT_VERSION="7"
 REDHAT_SUPPORT_PRODUCT="centos"
 REDHAT_SUPPORT_PRODUCT_VERSION="7"
 
-[root@YMP /]#
+[root@devbase2 /]#
 
 ```
 
@@ -349,7 +349,7 @@ docker [命令] --help
 #### (1) docker images
 
 ```bash
-[root@YMP /]# docker images
+[root@devbase2 /]# docker images
 
 # 解释
 REPOSITORY  # 镜像仓库源
@@ -410,7 +410,7 @@ docker pull mysql # 下载mysql镜像，default tag，默认最新版latest
 ```
 
 ```shell
-[root@YMP ~]# docker pull mysql
+[root@devbase2 ~]# docker pull mysql
 Using default tag: latest                  # 不写tag默认最新版
 latest: Pulling from library/mysql
 30627cea5424: Pull complete                # layer 分层下载，docker image的核心 联合文件系统
@@ -482,7 +482,7 @@ docker rmi -f $(docker images -aq)
 说明：有了镜像才能创建容器，linux，下载一个centos镜像来测试学习
 
 ```bash
-[root@YMP ~]# docker pull centos:7
+[root@devbase2 ~]# docker pull centos:7
 7: Pulling from library/centos
 2d473b07cdd5: Pull complete
 Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
@@ -530,7 +530,7 @@ docker run -it centos /bin/bash
 由于本地镜像列表中只有 `centos:7`（`eeb6ee3f44bd`），并没有 `centos:latest`，所以 Docker 尝试从远程仓库拉取 `centos:latest`，但由于网络原因（或配置的镜像加速器仍不可用）拉取失败，于是报错“Unable to find image 'centos:latest' locally”。
 
 ```shell
-[root@YMP]:/data]# docker images
+[root@devbase2]:/data]# docker images
 REPOSITORY                                          TAG       IMAGE ID       CREATED        SIZE
 nginx                                               latest    5253dc86cc93   4 days ago     161MB
 tomcat                                              9.0       b326c1d164e9   5 days ago     422MB
@@ -538,14 +538,14 @@ mysql                                               latest    d236310860c6   12 
 hello-world                                         latest    e2ac70e7319a   4 months ago   10.1kB
 centos                                              7         eeb6ee3f44bd   4 years ago    204MB
 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle   19c       7b5eb4597688   6 years ago    6.61GB
-[root@YMP]:/data]#
-[root@YMP]:~]# docker run -it centos bin/bash
+[root@devbase2]:/data]#
+[root@devbase2]:~]# docker run -it centos bin/bash
 Unable to find image 'centos:latest' locally
 
 docker: Error response from daemon: Get "https://registry-1.docker.io/v2/": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).
 See 'docker run --help'.
-[root@YMP]:~]#
-[root@YMP]:~]#
+[root@devbase2]:~]#
+[root@devbase2]:~]#
 
 ```
 
@@ -617,24 +617,24 @@ docker ps -a -q|xargs docker rm
 ```
 
 ```shell
-[root@YMP]:~]# docker ps -a
+[root@devbase2]:~]# docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 bfcea13c40cd        centos              "/bin/bash"         29 minutes ago      Up 29 minutes                                   stoic_wilson
 edbd9366d959        centos              "/bin/bash"         35 minutes ago      Up 35 minutes                                   affectionate_bartik
 9939864fa2e6        centos              "bin/bash"          48 minutes ago      Exited (0) 48 minutes ago                       unruffled_knuth
 5f42e9930435        centos              "/bin/bash"         52 minutes ago      Exited (0) 49 minutes ago                       lucid_cannon
 a89ddb393d3d        bf756fb1ae65        "/hello"            20 hours ago        Exited (0) 20 hours ago                         gracious_bhabha
-[root@YMP]:~]# docker rm 5f42e9930435
+[root@devbase2]:~]# docker rm 5f42e9930435
 5f42e9930435
-[root@YMP]:~]# docker rm edbd9366d959      # 注意正在运行的容器不能删除
+[root@devbase2]:~]# docker rm edbd9366d959      # 注意正在运行的容器不能删除
 Error response from daemon: You cannot remove a running container edbd9366d9596c744dd449119269b04de2f2a494e7fc471f6396bcefd94c33fe. Stop the container before attempting removal or force remove
 
-[root@YMP]:~]# docker ps -aq # 所有容器id
+[root@devbase2]:~]# docker ps -aq # 所有容器id
 bfcea13c40cd
 edbd9366d959
 9939864fa2e6
 a89ddb393d3d
-[root@YMP]:~]# docker rm -f $(docker ps -aq) # 全部删除
+[root@devbase2]:~]# docker rm -f $(docker ps -aq) # 全部删除
 bfcea13c40cd
 edbd9366d959
 9939864fa2e6
@@ -655,32 +655,32 @@ docker kill
 
 ```shell
 ## 查看正在运行的
-[root@YMP]:~]#docker ps
+[root@devbase2]:~]#docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ## 查看历史运行过的
-[root@YMP]:~]# docker ps -a
+[root@devbase2]:~]# docker ps -a
 CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                       PORTS     NAMES
 ed8a9aa0e49a   centos:7      "/bin/bash"   26 seconds ago   Exited (127) 9 seconds ago             eloquent_swanson
 f914d19b688c   centos:7      "/bin/bash"   4 minutes ago    Exited (127) 3 minutes ago             thirsty_goodall
 14daff4d07db   centos:7      "/bin/bash"   29 minutes ago   Exited (0) 28 minutes ago              objective_lehmann
 e52fd1a6ecfd   hello-world   "/hello"      2 days ago       Exited (0) 2 days ago                  dazzling_brattain
 ## 启动当前centos:7 这个容器,直接把container id 粘过来
-[root@YMP]:~]# docker start ed8a9aa0e49a
+[root@devbase2]:~]# docker start ed8a9aa0e49a
 ed8a9aa0e49a
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ## 查看当前运行容器 发现启动成功
-[root@YMP]:~]# docker ps
+[root@devbase2]:~]# docker ps
 CONTAINER ID   IMAGE      COMMAND       CREATED              STATUS         PORTS     NAMES
 ed8a9aa0e49a   centos:7   "/bin/bash"   About a minute ago   Up 3 seconds             eloquent_swanson
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ## 停止运行
-[root@YMP]:~]# docker stop ed8a9aa0e49a
+[root@devbase2]:~]# docker stop ed8a9aa0e49a
 ed8a9aa0e49a
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ## 再次查看 没有这个容器了
-[root@YMP]:~]#  docker ps
+[root@devbase2]:~]#  docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-[root@YMP]:~]#
+[root@devbase2]:~]#
 
 ```
 
@@ -703,7 +703,7 @@ docker ps
 #### (2) 查看日志
 
 ```shell
-[root@YMP]:~]#docker logs --help
+[root@devbase2]:~]#docker logs --help
 
 Usage:	docker logs [OPTIONS] CONTAINER
 
@@ -723,11 +723,11 @@ Options:
                        (e.g. 42m for 42 minutes)
 
 ## 运行image->执行一些命令->退出容器->查看docker log
-[root@YMP]:~]#docker run -it centos:7 /bin/bash
-[root@YMP]:~]#docker ps
-[root@YMP]:~]#docker ps -a
-[root@YMP]:~]#docker logs -tf a34faa845435
-[root@YMP]:~]#
+[root@devbase2]:~]#docker run -it centos:7 /bin/bash
+[root@devbase2]:~]#docker ps
+[root@devbase2]:~]#docker ps -a
+[root@devbase2]:~]#docker logs -tf a34faa845435
+[root@devbase2]:~]#
 
 ```
 
@@ -744,8 +744,8 @@ whiel true;do echo shenzai;sleep
 #### (3) 查看正在运行的容器信息
 
 ```shell
-[root@YMP]:~]#
-[root@YMP]:~]# docker inspect a34faa845435
+[root@devbase2]:~]#
+[root@devbase2]:~]# docker inspect a34faa845435
 [
     {
         "Id": "a34faa8454355bdc41ea44649317817276fdb8cdbdc6359a18e51ae44839d6ff",
@@ -952,7 +952,7 @@ whiel true;do echo shenzai;sleep
         }
     }
 ]
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ```
 
 
@@ -1003,11 +1003,11 @@ docker attach
 
 ```shell
 ## 进入正在运行的容器
-[root@YMP]:~]# docker ps
+[root@devbase2]:~]# docker ps
 CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS         PORTS     NAMES
 414b951ee19e   centos:7   "/bin/bash"   3 minutes ago   Up 3 minutes             naughty_aryabhata
-[root@YMP]:~]#
-[root@YMP]:~]# docker attach 414b951ee19e
+[root@devbase2]:~]#
+[root@devbase2]:~]# docker attach 414b951ee19e
 
 ## 在目录中创建test.c文件
 [root@414b951ee19e /]# touch test.c
@@ -1017,11 +1017,11 @@ CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS         PORTS    
 exit
 
 ## 查看现在运行的容器
-[root@YMP]:~]# docker ps
+[root@devbase2]:~]# docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ## 容器虽然被停止，但是数据都会保留
-[root@YMP]:~]# docker ps -a
+[root@devbase2]:~]# docker ps -a
 CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                           PORTS     NAMES
 414b951ee19e   centos:7      "/bin/bash"   3 minutes ago       Exited (0) 15 seconds ago                  naughty_aryabhata
 f2543810e378   centos:7      "/bin/bash"   10 minutes ago      Exited (0) 7 minutes ago                   naughty_napier
@@ -1032,14 +1032,14 @@ ed8a9aa0e49a   centos:7      "/bin/bash"   About an hour ago   Exited (137) Abou
 f914d19b688c   centos:7      "/bin/bash"   About an hour ago   Exited (127) About an hour ago             thirsty_goodall
 14daff4d07db   centos:7      "/bin/bash"   2 hours ago         Exited (0) 2 hours ago                     objective_lehmann
 e52fd1a6ecfd   hello-world   "/hello"      2 days ago          Exited (0) About an hour ago               dazzling_brattain
-[root@YMP]:~]#
+[root@devbase2]:~]#
 ## 容器数据拷贝到主机
-[root@YMP]:~]# docker cp 414b951ee19e:/test.c /data
+[root@devbase2]:~]# docker cp 414b951ee19e:/test.c /data
 Successfully copied 1.54kB to /data
-[root@YMP]:~]#
-[root@YMP]:~]# ll /data/test.c
+[root@devbase2]:~]#
+[root@devbase2]:~]# ll /data/test.c
 -rw-r--r-- 1 root root 0 8月   9 17:09 /data/test.c
-[root@YMP]:~]#
+[root@devbase2]:~]#
 
 # 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步 /home /home
 ```
@@ -1059,85 +1059,64 @@ docker stats
 ![image-20200617210554147](images/image-20200617210554147.png)
 
 ```shell
-[root@YMP]:~]# docker --help
+[root@devbase2]:~# docker --help
 
-Usage:	docker [OPTIONS] COMMAND
+Usage:  docker [OPTIONS] COMMAND
 
 A self-sufficient runtime for containers
 
-Options:
-      --config string      Location of client config
-                           files (default "/root/.docker")
-  -c, --context string     Name of the context to use to
-                           connect to the daemon
-                           (overrides DOCKER_HOST env var
-                           and default context set with
-                           "docker context use")
-  -D, --debug              Enable debug mode
-  -H, --host list          Daemon socket(s) to connect to
-  -l, --log-level string   Set the logging level
-                           ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
-      --tls                Use TLS; implied by --tlsverify
-      --tlscacert string   Trust certs signed only by
-                           this CA (default
-                           "/root/.docker/ca.pem")
-      --tlscert string     Path to TLS certificate file
-                           (default "/root/.docker/cert.pem")
-      --tlskey string      Path to TLS key file (default
-                           "/root/.docker/key.pem")
-      --tlsverify          Use TLS and verify the remote
-  -v, --version            Print version information and quit
+Common Commands:
+  run         Create and run a new container from an image
+  exec        Execute a command in a running container
+  ps          List containers
+  build       Build an image from a Dockerfile
+  pull        Download an image from a registry
+  push        Upload an image to a registry
+  images      List images
+  login       Log in to a registry
+  logout      Log out from a registry
+  search      Search Docker Hub for images
+  version     Show the Docker version information
+  info        Display system-wide information
 
 Management Commands:
   builder     Manage builds
-  config      Manage Docker configs
+  buildx*     Docker Buildx
+  compose*    Docker Compose
   container   Manage containers
   context     Manage contexts
-  engine      Manage the docker engine
   image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
   network     Manage networks
-  node        Manage Swarm nodes
   plugin      Manage plugins
-  secret      Manage Docker secrets
-  service     Manage services
-  stack       Manage Docker stacks
-  swarm       Manage Swarm
   system      Manage Docker
   trust       Manage trust on Docker images
   volume      Manage volumes
 
+Swarm Commands:
+  swarm       Manage Swarm
+
 Commands:
   attach      Attach local standard input, output, and error streams to a running container
-  build       Build an image from a Dockerfile
   commit      Create a new image from a container's changes
   cp          Copy files/folders between a container and the local filesystem
   create      Create a new container
   diff        Inspect changes to files or directories on a container's filesystem
   events      Get real time events from the server
-  exec        Run a command in a running container
   export      Export a container's filesystem as a tar archive
   history     Show the history of an image
-  images      List images
   import      Import the contents from a tarball to create a filesystem image
-  info        Display system-wide information
   inspect     Return low-level information on Docker objects
   kill        Kill one or more running containers
   load        Load an image from a tar archive or STDIN
-  login       Log in to a Docker registry
-  logout      Log out from a Docker registry
   logs        Fetch the logs of a container
   pause       Pause all processes within one or more containers
   port        List port mappings or a specific mapping for the container
-  ps          List containers
-  pull        Pull an image or a repository from a registry
-  push        Push an image or a repository to a registry
   rename      Rename a container
   restart     Restart one or more containers
   rm          Remove one or more containers
   rmi         Remove one or more images
-  run         Run a command in a new container
   save        Save one or more images to a tar archive (streamed to STDOUT by default)
-  search      Search the Docker Hub for images
   start       Start one or more stopped containers
   stats       Display a live stream of container(s) resource usage statistics
   stop        Stop one or more running containers
@@ -1145,9 +1124,26 @@ Commands:
   top         Display the running processes of a container
   unpause     Unpause all processes within one or more containers
   update      Update configuration of one or more containers
-  version     Show the Docker version information
   wait        Block until one or more containers stop, then print their exit codes
 
+Global Options:
+      --config string      Location of client config files (default "/root/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default
+                           context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket to connect to
+  -l, --log-level string   Set the logging level ("debug", "info", "warn", "error", "fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Run 'docker COMMAND --help' for more information on a command.
+
+For more help on how to use Docker, head to https://docs.docker.com/go/guides/
+[root@devbase2]:#
 ```
 
 
@@ -1170,7 +1166,7 @@ Commands:
 # 官网搜索nginx，可以看到帮助文档
 
 # 下载镜像
-[root@YMP ~]# docker pull nginx
+[root@devbase2 ~]# docker pull nginx
 Using default tag: latest
 latest: Pulling from library/nginx
 26c307b5e35a: Pulling fs layer
@@ -1454,7 +1450,7 @@ ctrl + C退出，记得stop
 ##### (3) 拉取centos7
 
 ```shell
-[root@YMP ~]# docker pull centos:7
+[root@devbase2 ~]# docker pull centos:7
 7: Pulling from library/centos
 2d473b07cdd5: Pull complete
 Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
@@ -1465,7 +1461,7 @@ docker.io/library/centos:7
 ##### (4)拉取orcale19c
 
 ```shell
-[root@YMP ~]# docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
+[root@devbase2 ~]# docker pull registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 19c: Pulling from zhuyijun/oracle
 bce8f778fef0: Pull complete
 3fc3fd32c0bc: Pull complete
@@ -1476,7 +1472,7 @@ b94f01bb60c6: Pull complete
 Digest: sha256:3898a9394720f30ce7f0b83ef2d172f4cd11b958282e0505f83cf2b0e5eaf7d4
 Status: Downloaded newer image for registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
 registry.cn-hangzhou.aliyuncs.com/zhuyijun/oracle:19c
-[root@YMP ~]#
+[root@devbase2 ~]#
 ```
 
 
