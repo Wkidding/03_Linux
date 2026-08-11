@@ -1934,17 +1934,24 @@ docker run -d -p 3310:3306 -v /data/docker_volumedata/mysql_exercise1/conf:/etc/
 
 ![image-20260812064756989](images/image-20260812064756989.png)
 
+使用dbeaver连接数据库，连接OK
+
+![image-20260812065348065](images/image-20260812065348065.png)
+
+需要注意:MySQL 8.0 默认使用 `caching_sha2_password` 作为身份验证插件，而较旧的 JDBC 驱动（如 MySQL Connector/J 8.0.16 之前）在建立连接时，默认不允许从服务器获取公钥（为了安全考虑），导致连接失败。在DBaver中需要进行配置。
+
+ DBeaver 的“驱动属性”标签页中，设置如下属性
+
+| 属性名                    | 值      |
+| :------------------------ | :------ |
+| `allowPublicKeyRetrieval` | `true`  |
+| `useSSL`                  | `false` |
+
+![image-20260812065557070](images/image-20260812065557070.png)
+
+![image-20260812065534336](images/image-20260812065534336.png)
 
 
-![image-20200618173234347](Docker.assets/image-20200618173234347.png)
-
-点 测试链接
-
-![image-20200618173300551](Docker.assets/image-20200618173300551.png)
-
-点 链接
-
-![image-20200618173729692](Docker.assets/image-20200618173729692.png)
 
 
 
