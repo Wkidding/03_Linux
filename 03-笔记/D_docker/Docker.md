@@ -1964,7 +1964,7 @@ Dockerfile文件中指令都是大写的，这里的每个命令可以理解为�
 `/data/docker_volumedata/centos_exercise/dockerfile1`
 
 ```shell
-FROM centos
+FROM centos:7
 
 VOLUME ["volume01","volume02"] 
 
@@ -1972,28 +1972,37 @@ CMD echo "---end---"
 CMD /bin/bash
 ```
 
-![image-20260812070720471](images/image-20260812070720471.png)
+![image-20260812071526535](images/image-20260812071526535.png)
 
 ##### (2) 在docker中使用build部署
+
+将**当前目录**下的文件作为构建环境，使用名为 **`dockerfile1`** 的构建配置文件，构建出一个命名为 `duzxlin/centos:1.0`*的 Docker 镜像
 
 ```shell
 ## 注意：最后的点很重要 镜像名不能有/
 docker build -f dockerfile1 -t duzxlin/centos:1.0 .  
+
+## -f 指定了一个自定义文件名 dockerfile1
+## -t 代表 --tag。完整的镜像名由三部分组成：
+- 仓库/用户名：duzxlin（通常对应 Docker Hub 的用户名或仓库名）
+- 镜像名：centos
+- 标签：1.0（表示版本号，如果不写默认是 latest）
+## 最后的 . 表示是在当前目录下进行构建。这个 . 表示 当前目录 会被作为“构建上下文”打包发送给 Docker 守护进程。Dockerfile 中的 COPY 或 ADD 指令只能访问这个上下文路径下的文件。
 ```
 
-![image-20200618212936481](Docker.assets/image-20200618212936481.png)
+![image-20260812071600211](images/image-20260812071600211.png)
+
+##### (3) 查看生成的镜像
 
 ```shell
 docker images
 ```
 
-![image-20200618213310752](Docker.assets/image-20200618213310752.png)
+![image-20260812071646397](images/image-20260812071646397.png)
 
-##### (3) 
 
-##### (4) 
 
-启动生成的镜像
+##### (4) 启动生成的镜像
 
 ![image-20200618220658979](Docker.assets/image-20200618220658979.png)
 
