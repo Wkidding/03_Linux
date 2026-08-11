@@ -1817,10 +1817,27 @@ docker inspect
 [root@devbase2]:~# docker volume ls
 DRIVER    VOLUME NAME
 local     Named-nginx
+
+# 查看卷的详细信息
+[root@devbase2]:~# docker volume inspect Named-nginx
+[
+    {
+        "CreatedAt": "2026-08-11T15:49:11+08:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/Named-nginx/_data",
+        "Name": "Named-nginx",
+        "Options": null,
+        "Scope": "local"
+    }
+]
 [root@devbase2]:~#
+
 ```
 
 ![image-20260811155228733](images/image-20260811155228733.png)
+
+![image-20260811155529353](images/image-20260811155529353.png)
 
 #### 方式三： 匿名卷（Anonymous Volume）/ 匿名挂载
 
@@ -1859,15 +1876,42 @@ local     Named-nginx
 
 
 
+#### 🔍 区分上述三种挂在方法
+
+##### ① 看 `-v` 的第一个字段）
+
+| 挂载类型             | `-v` 语法格式                | 第一个字段特征                            | 示例                       |
+| :------------------- | :--------------------------- | :---------------------------------------- | :------------------------- |
+| **Bind Mount**       | `-v 宿主机绝对路径:容器路径` | **以 `/` 或盘符开头**（如 `/d/`、`C:`）   | `-v /d/myapp:/app`         |
+| **Named Volume**     | `-v 卷名:容器路径`           | **纯字母/数字/下划线组合，不以 `/` 开头** | `-v mydata:/var/lib/mysql` |
+| **Anonymous Volume** | `-v 容器路径`                | **仅容器路径，无宿主机路径或卷名**        | `-v /app/logs`             |
+
+##### ② `docker inspect` 查看挂载详情
+
+**输出解读**：
+
+| 挂载类型             | `Type` 字段 | `Source` 字段                                                | `Name` 字段            |
+| :------------------- | :---------- | :----------------------------------------------------------- | :--------------------- |
+| **Bind Mount**       | `bind`      | 宿主机绝对路径（如 `/d/host_data`）                          | 空（或 `""`）          |
+| **Named Volume**     | `volume`    | Docker 卷存储位置（如 `/var/lib/docker/volumes/my_volume/_data`） | 卷名（如 `my_volume`） |
+| **Anonymous Volume** | `volume`    | Docker 卷存储位置（如 `/var/lib/docker/volumes/2c3e4f.../_data`） | 随机哈希（匿名）       |
+
+#### 拓展
+
+```shell
+# 通过 -v 容器内路径：ro  rw 改变读写权限
+ro    readonly  # 只读，能通过宿主机来操作，容器内部是无法操作
+rw    readwrite  # 可读可写
+
+# 一旦设置了容器权限，容器对我们挂载出来的内容就有限定
+docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx:ro nginx
+docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx:rw nginx
+
+```
 
 
-![image-20200618203452205](Docker.assets/image-20200618203452205.png)
 
-![image-20200618203744983](Docker.assets/image-20200618203744983.png)
-
-
-
-### exercise：实战安装mysql
+#### exercise：实战安装mysql
 
 MySQL的数据持久化命令
 
@@ -2045,7 +2089,7 @@ docker rm -f
 
 这个写一个项目时一样的
 
-### 官方DockerFile示例
+#### 官方DockerFile示例
 
 看一下官方的DockerFile
 
@@ -2057,7 +2101,7 @@ docker rm -f
 
 -----
 
-### DockerFile基础知识
+#### DockerFile基础知识
 
 1. 每个指令都必须是大写字母
 2. 按照从上到下顺序执行
@@ -2072,7 +2116,7 @@ Docker镜像逐渐成为企业的交付标准，必须掌握！
 
 ---
 
-### DockerFile命令
+#### DockerFile命令
 
 ![æ¥çæºå¾å](http://www.yunweipai.com/wp-content/uploads/2016/09/171.jpg)
 
@@ -2094,7 +2138,7 @@ COPY # 将文件拷贝到镜像中
 ENV # 构建的时候设置环境变量
 ```
 
-### 实战构建自己的centos
+#### 实战构建自己的centos
 
 Docker Hub中99%的镜像都是从FROM scratch开始的
 
@@ -2198,9 +2242,7 @@ ifconfig
 
 我们平时拿到一个镜像也可以通过这个方法研究一下他是怎么做的
 
-### CMD与ENTRYPOINT
-
-【视频书签，https://www.bilibili.com/video/BV1og4y1q7M4?p=29，雨终于停了，想去江边跑步】
+#### CMD与ENTRYPOINT
 
 ```shell
 
@@ -2222,12 +2264,7 @@ Docker中许多命令都十分相似，我们需要了解他们的区别，最�
 
 ---
 
-### 实战Tomcat镜像
-
-【视频书签，https://www.bilibili.com/video/BV1og4y1q7M4?p=30，这节有点长，这个jar包是哪来的，晚上再搞，先去该模型比较急，还有10节课，这周争取都看完】
-
-1. 准备镜像文件 tomcat压缩包
-2. 
+#### 实战Tomcat镜像
 
 ## IDEA整合Docker
 
