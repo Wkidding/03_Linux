@@ -2010,19 +2010,26 @@ docker run -it 9b3e01490550 /bin/bash
 
 ![image-20260812072018847](images/image-20260812072018847.png)
 
-##### (5) 测试容器卷是否共享
+##### (5) 测试容器卷挂载信息
 
-在容器内部创建一个文件，查看Mounts，Source对应容器外目录，匿名挂载卷
+查看Mounts，Source对应容器外目录，本次挂载使用的是匿名挂载方式
 
-![image-20200618221801103](Docker.assets/image-20200618221801103.png)
+```shell
+## 查看使用自己的image运行的容器
+docker ps 
+## 查看容器中的详细信息，关注mounts中的挂载目录
+docker imspect ec4d121e1b18
+```
 
-查看Mounts，Source对应容器外目录，匿名挂载卷
+![image-20260812072653168](images/image-20260812072653168.png)
 
-![image-20200618221837895](Docker.assets/image-20200618221837895.png)
+![image-20260812072634761](images/image-20260812072634761.png)
 
-测试一下，在container volume01下生成文件
+##### (6) 测试是否共享
 
-![image-20200618222224352](Docker.assets/image-20200618222224352.png)
+![image-20260812073438515](images/image-20260812073438515.png)
+
+
 
 在主机挂载路径下，也同样生成
 
