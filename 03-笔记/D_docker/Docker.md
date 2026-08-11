@@ -1953,7 +1953,7 @@ docker run -d -p 3310:3306 -v /data/docker_volumedata/mysql_exercise1/conf:/etc/
 
 
 
-#### exercise2：多个容器数据共享
+#### exercise2：使用dockerfile构建个人镜像，并指定共享数据卷
 
 使用Dockerfile技术，构建docker镜像的文件
 
@@ -2033,21 +2033,51 @@ docker imspect ec4d121e1b18
 
 
 
-
-
 #### exercise3：多个容器中的数据共享
+
+通过` --volumes-from `可以实现多个不同容器间的数据共享
+
+结论：
+
+1、容器之间配置信息的传递，数据卷容器的生命周期一直持续到没有容器使用位置
+
+2、但是如果持久化到了本地，即使所有容器删除了，本地数据是不会删除的
+
+(1) 使用exercise2中生成的个人image,部署3个容器
+
+```shell
+docker images
+## 启动docker01，用之前建的padaxing/centos 1.0 镜像
+docker run -d -it --name docker01 duzxlin/centos:1.0 
+docker run -d -it --name docker02 --volumes-from docker01 duzxlin/centos:1.0
+docker run -d -it --name docker03 --volumes-from docker01 duzxlin/centos:1.0
+```
+
+(2) docker02继承docker01的volumes
+
+验证，在docker01下加一个数据，在docker02下也会出现
+
+(3) docker03也继承docker01的volumes
+
+验证，在docker03的volume01下建立文件，在docker01的volume01下同样也有
+
+(4) 删除docker01，保留docker02，docker03
+
+验证，此时，volume01/volum02中的数据依然存在
+
+(5) 删除docker02，保留docker03
+
+验证，此时，volume01/volum02中的数据依然存在
+
+(6) 删除docker03
+
+验证，此时，容器中volume01/volum02中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在。
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
 看一下有啥images
 
-![image-20200621165733780](Docker.assets/image-20200621165733780.png)
-
 启动docker01，用之前建的padaxing/centos 1.0  镜像
-
-```shell
-docker run -it --name docker01 padaxing/centos:1.0 # 1.0必须写
-```
 
 ![image-20200621170429658](Docker.assets/image-20200621170429658.png)
 
@@ -2058,10 +2088,6 @@ docker run -it --name docker01 padaxing/centos:1.0 # 1.0必须写
 ![image-20200621170540593](Docker.assets/image-20200621170540593.png)
 
 依次启动docker02、docker03
-
-```shell
-docker run -it --name docker02 --volumes-from docker01 padaxing/centos:1.0
-```
 
 docker02继承docker01的volumes
 
@@ -2090,12 +2116,6 @@ docker rm -f
 ![image-20200621172830779](Docker.assets/image-20200621172830779.png)
 
 可以看到，删除docker01，进入docker02，数据依然在
-
-结论：
-
-容器之间配置信息的传递，数据卷容器的生命周期一直持续到没有容器使用位置
-
-但是如果持久化到了本地，即使所有容器删除了，本地数据是不会删除的
 
 
 
