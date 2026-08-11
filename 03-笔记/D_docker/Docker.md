@@ -1705,8 +1705,6 @@ docker commit -a="duzxlin" -m="add webapps app" e431250ec58c mytomcat:1.0
 
 ## 五、Docker 数据管理
 
-
-
 ### 1 容器数据卷（Volume）
 
 docker是要将应用和环境打包成一个镜像，但数据不应该直接存储在容器中，否则容器删除，数据就会丢失。因此，容器之间要有一个数据共享技术。在Docker容器中产生的数据，同步到本地，这就是卷（Volume）技术。
@@ -1727,11 +1725,10 @@ docker是要将应用和环境打包成一个镜像，但数据不应该直接�
 
 
 
-#### (1) 使用数据卷
-
-##### 方式一：使用命令来挂载
+#### 方式一：绑定挂载（Bind Mount）
 
 ```shell
+# 通过命令绑定挂载容器数据卷
 docker run -it -v 主机目录:容器目录 镜像名
 # -it 交互式进入
 # -v 挂载卷。将宿主机目录/文件挂载到容器内部，或将命名卷挂载到容器内部。这是 Docker 中数据持久化和共享的关键机制。
@@ -1773,13 +1770,65 @@ docker inspect
 
 
 
+### 具名和匿名挂载
 
 
 
+### 2️⃣ 命名卷（Named Volume）
+
+由 Docker 管理的存储空间，数据存储在 Docker 的专属目录下（如 Linux 的 `/var/lib/docker/volumes/`，Windows 的 `C:\ProgramData\Docker\volumes\`）。
+**使用场景**：生产环境数据持久化（数据库）、容器间共享数据、需要备份/迁移的数据。
+
+- **语法**：`-v 卷名:/容器路径`
+
+- **示例**：
+
+  bash
+
+  ```
+  docker run -v mysql_data:/var/lib/mysql mysql
+  ```
+
+  
+
+- **特点**：
+
+  - ✅ 不依赖宿主机路径，跨环境可移植。
+  - ✅ 数据卷可被多个容器同时挂载（通过 `--volumes-from`）。
+  - ✅ 支持数据卷驱动（如 NFS、云存储）。
+  - 💡 可通过 `docker volume ls` 查看，用 `docker volume inspect` 查看详情。
+
+------
+
+### 3️⃣ 匿名卷（Anonymous Volume）
+
+不指定卷名，由 Docker 自动生成一个随机名称。
+**使用场景**：临时或辅助存储（如日志、缓存），通常配合 Dockerfile 中的 `VOLUME` 指令使用。
+
+- **语法**：`-v /容器路径`
+
+- **示例**：
+
+  bash
+
+  ```
+  docker run -v /app/logs nginx
+  ```
+
+  
+
+- **特点**：
+
+  - ⚠️ 不易管理（卷名随机），容器删除后卷可能残留。
+  - 🧹 可用 `docker volume prune` 清理未使用的匿名卷。
+
+![image-20200618203452205](Docker.assets/image-20200618203452205.png)
+
+![image-20200618203744983](Docker.assets/image-20200618203744983.png)
 
 
 
-### 实战安装mysql
+### exercise：实战安装mysql
 
 MySQL的数据持久化命令
 
@@ -1814,56 +1863,17 @@ docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/
 
 ![image-20200618173729692](Docker.assets/image-20200618173729692.png)
 
-### 具名和匿名挂载
 
-【视频书签：https://www.bilibili.com/video/BV1og4y1q7M4?p=23，有点累了，跟不动了，这两天运动太少了，有点颓】
 
-![image-20200618203452205](Docker.assets/image-20200618203452205.png)
 
-![image-20200618203744983](Docker.assets/image-20200618203744983.png)
 
-### 
+
+
+
 
 DockerFile使用来构建docker镜像的文件
 
 ![image-20200618211547398](Docker.assets/image-20200618211547398.png)
-
-> kas:
-> 没有安装吧？
->
-> kas:
-> 安装一下就可以了
->
-> py9001021曾叙坚:
-> centos 默认使用vi写内容，vim需要下载
->
-> py9001021曾叙坚:
-> 是的，需要下载vim才能使用
->
-> YF:
-> 配置可以改下，字体就很炫酷了
->
-> 都建民:
-> 用vi  试试
->
-> 都建民:
-> 你没有安装vim
->
-> 都建民:
-> yum install vim
->
-> 都建民:
-> 试试这个命令
-
-```shell
-yum install vim # 编辑文件的，没有装一下
-```
-
-![image-20200618211516566](Docker.assets/image-20200618211516566.png)
-
-安装完之后就可以运行这个命令了
-
-![image-20200618211803012](Docker.assets/image-20200618211803012.png)
 
 ```shell
 # 镜像是一层一层的，脚本是一行一行的
@@ -1881,10 +1891,7 @@ CMD /bin/bash
 
 ![image-20200618211023834](Docker.assets/image-20200618211023834.png)
 
-想保存并退出
-
->Wesley.:
->shift  加  冒号
+>
 
 
 
@@ -1923,8 +1930,6 @@ docker images
 在主机挂载路径下，也同样生成
 
 ### 多个容器数据共享
-
-【视频书签：https://www.bilibili.com/video/BV1og4y1q7M4?p=25，周日下午，滨江，大雨，本来说这周六刷完的，发现周六啥也干不下去，除了吃就是睡，要么发呆研究小金库】
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
@@ -1988,7 +1993,7 @@ docker rm -f
 
 ------
 
-### DockerFile
+### (2) DockerFile
 
 是用来构建docker镜像的文件，可以理解为命令参数脚本
 
