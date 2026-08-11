@@ -1748,6 +1748,11 @@ docker run -it -v /data/docker_volumedata/:/home centos:7 /bin/bash
 
 ## 2、sess2 中查看容器的详细信息，找到挂载信息Mounts
 docker inspect 
+
+## 使用-v技术后，数据是双向同步的！！
+## 3、在容器/home中增加文件 test01.c，查看宿主机的/data/docker_volumedata 中存在test01.c
+## 4、在宿主机的/data/docker_volumedata 中增加文件 test02.c，查看容器/home中存在test02.c
+## 5、容器停止后，修改宿主机文件，再启动容器的时候，文件同样改变
 ```
 
 ![image-20260811144637169](images/image-20260811144637169.png)
@@ -1758,13 +1763,21 @@ docker inspect
 
 ![image-20260811145158347](images/image-20260811145158347.png)
 
-
-
-
+![image-20260811145950112](images/image-20260811145950112.png)
 
 容器停止后，修改主机文件，再启动容器的时候，数据同样改变
 
-双向同步
+![image-20260811150234670](images/image-20260811150234670.png)
+
+![image-20260811150516789](images/image-20260811150516789.png)
+
+
+
+
+
+
+
+
 
 ### 实战安装mysql
 
