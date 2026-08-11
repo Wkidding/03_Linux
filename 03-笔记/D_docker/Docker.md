@@ -1727,6 +1727,14 @@ docker是要将应用和环境打包成一个镜像，但数据不应该直接�
 
 #### 方式一：绑定挂载（Bind Mount）
 
+最直接的方式，将宿主机上的特定文件或目录映射到容器内部。
+**使用场景**：开发环境热更新、代码实时同步、向容器注入配置文件。
+
+- **特点**：
+  - ✅ 宿主机和容器文件双向实时同步。
+  - ❌ 路径依赖宿主机结构，不可移植（Dockerfile 中无法定义）。
+  - ⚠️ 若宿主机路径不存在，Docker 会自动创建空目录（但生产环境需谨慎）。
+
 ```shell
 # 通过命令绑定挂载容器数据卷
 docker run -it -v 主机目录:容器目录 镜像名
@@ -1736,8 +1744,9 @@ docker run -it -v 主机目录:容器目录 镜像名
 ## 在挂载路径末尾可以追加 :ro 或 :rw（默认是 rw 读写）
 # :ro 容器内对该目录只读，无法修改。适合挂载配置文件（容器只读，宿主机改配置后重启容器生效）。
 # :rw 容器内对该目录可读写
-
 ```
+
+##### demo01
 
 ```shell
 ## 1、sess1 中启动一个centos容器，并将home目录映射到宿主机的 /data/docker_volumedata/目录下
@@ -1752,7 +1761,11 @@ docker inspect
 ## 5、容器停止后，修改宿主机文件，再启动容器的时候，文件同样改变
 ```
 
+###### 步骤1
+
 ![image-20260811144637169](images/image-20260811144637169.png)
+
+###### 步骤2
 
 ![image-20260811144941823](images/image-20260811144941823.png)
 
@@ -1760,7 +1773,11 @@ docker inspect
 
 ![image-20260811145158347](images/image-20260811145158347.png)
 
+###### 步骤3&4
+
 ![image-20260811145950112](images/image-20260811145950112.png)
+
+###### 步骤5
 
 容器停止后，修改主机文件，再启动容器的时候，数据同样改变
 
@@ -1770,26 +1787,16 @@ docker inspect
 
 
 
-### 具名和匿名挂载
-
-
-
-### 2️⃣ 命名卷（Named Volume）
+#### 方式二： 命名卷（Named Volume）/ 具名挂载
 
 由 Docker 管理的存储空间，数据存储在 Docker 的专属目录下（如 Linux 的 `/var/lib/docker/volumes/`，Windows 的 `C:\ProgramData\Docker\volumes\`）。
 **使用场景**：生产环境数据持久化（数据库）、容器间共享数据、需要备份/迁移的数据。
 
 - **语法**：`-v 卷名:/容器路径`
 
-- **示例**：
-
-  bash
-
+  ```shell
+  docker run [...] -v 卷名:/容器路径 REPOSITORY:TAG
   ```
-  docker run -v mysql_data:/var/lib/mysql mysql
-  ```
-
-  
 
 - **特点**：
 
@@ -1798,29 +1805,61 @@ docker inspect
   - ✅ 支持数据卷驱动（如 NFS、云存储）。
   - 💡 可通过 `docker volume ls` 查看，用 `docker volume inspect` 查看详情。
 
-------
+##### demo02
 
-### 3️⃣ 匿名卷（Anonymous Volume）
+```shell
+# 命名卷挂载（通过 -v 卷名:容器内路径，可以手动指定卷的名称）
+[root@devbase2]:~# docker run -d -P --name nginx01 -v Named-nginx:/etc/nginx nginx
+942ecc09b437028050ef2507975566fa6db6e6c3d3cc80e3628ce2859aafcbaa
+[root@devbase2]:~#
+
+# 查看一下这个卷
+[root@devbase2]:~# docker volume ls
+DRIVER    VOLUME NAME
+local     Named-nginx
+[root@devbase2]:~#
+```
+
+![image-20260811155228733](images/image-20260811155228733.png)
+
+#### 方式三： 匿名卷（Anonymous Volume）/ 匿名挂载
 
 不指定卷名，由 Docker 自动生成一个随机名称。
 **使用场景**：临时或辅助存储（如日志、缓存），通常配合 Dockerfile 中的 `VOLUME` 指令使用。
 
 - **语法**：`-v /容器路径`
 
-- **示例**：
-
-  bash
-
+  ```shell
+  docker run -v /app/logs ngin
   ```
-  docker run -v /app/logs nginx
-  ```
-
-  
 
 - **特点**：
 
   - ⚠️ 不易管理（卷名随机），容器删除后卷可能残留。
   - 🧹 可用 `docker volume prune` 清理未使用的匿名卷。
+
+##### demo03
+
+```shell
+# 匿名挂载
+[root@devbase2]:~# docker run -d -P --name nginx02 -v /ect/nginx nginx
+8dcba183391f309a2027c0de26a2b74f3fc48efa74dc873daae2a251af57433b
+
+# 查看所有的 volume 的情况
+[root@devbase2]:~# docker volume ls
+DRIVER    VOLUME NAME
+local     8363ec8cd51db76618e52a81450d1b4383d67e322138587629d339e067221049
+local     Named-nginx
+[root@devbase2]:~#
+
+# 这里发现，匿名挂载时，只在 -v 写容器内的路径，没有写容器外的路径！
+```
+
+![image-20260811155215897](images/image-20260811155215897.png)
+
+
+
+
 
 ![image-20200618203452205](Docker.assets/image-20200618203452205.png)
 
