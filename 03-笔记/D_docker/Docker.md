@@ -2004,9 +2004,15 @@ docker images
 
 ##### (4) 启动生成的镜像
 
-![image-20200618220658979](Docker.assets/image-20200618220658979.png)
+```shell
+docker run -it 9b3e01490550 /bin/bash
+```
 
-在容器内部创建一个文件
+![image-20260812072018847](images/image-20260812072018847.png)
+
+##### (5) 测试容器卷是否共享
+
+在容器内部创建一个文件，查看Mounts，Source对应容器外目录，匿名挂载卷
 
 ![image-20200618221801103](Docker.assets/image-20200618221801103.png)
 
