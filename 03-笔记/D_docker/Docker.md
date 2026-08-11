@@ -1041,7 +1041,7 @@ Successfully copied 1.54kB to /data
 -rw-r--r-- 1 root root 0 8月   9 17:09 /data/test.c
 [root@devbase2]:~]#
 
-# 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步 /home /home
+# 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步
 ```
 
 
@@ -1896,7 +1896,7 @@ local     Named-nginx
 | **Named Volume**     | `volume`    | Docker 卷存储位置（如 `/var/lib/docker/volumes/my_volume/_data`） | 卷名（如 `my_volume`） |
 | **Anonymous Volume** | `volume`    | Docker 卷存储位置（如 `/var/lib/docker/volumes/2c3e4f.../_data`） | 随机哈希（匿名）       |
 
-#### 拓展
+#### 🔍拓展
 
 ```shell
 # 通过 -v 容器内路径：ro  rw 改变读写权限
@@ -1911,30 +1911,30 @@ docker run -d -P --name nginx02 -v juming-nginx:/etc/nginx:rw nginx
 
 
 
-#### exercise：实战安装mysql
+#### exercise1：MySQL的数据持久化
 
-MySQL的数据持久化命令
+使用容器卷技术，在docker中部署mysql数据库并实现数据持久化。
 
 ```shell
-docker search mysql
+## 在docker中部署mysql,使用-v指定数据卷
+## 可以使用多个-V可以不同的数据卷挂载
+## /data/docker_volumedata/mysql_exercise1/conf 挂载容器中mysql的conf配置文件
+## /data/docker_volumedata/mysql_exercise1/data 挂载容器中mysql的数据目录
+docker run -d -p 3310:3306 -v /data/docker_volumedata/mysql_exercise1/conf:/etc/mysql/conf.d -v /data/docker_volumedata/mysql_exercise1/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql
 
-# 拉取
-docker pull mysql:5.7
-
-# 挂载
-docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql5.7
-
+## 参数解释
 -d 后台运行
 -p 端口映射
 -v 卷挂载
 -e 环境配置 安装启动mysql需要配置密码
 --name 容器名字
-
 ```
 
-![image-20200618171353336](Docker.assets/image-20200618171353336.png)
+![image-20260812064626866](images/image-20260812064626866.png)
 
-链接测试：打开SQLyog
+![image-20260812064756989](images/image-20260812064756989.png)
+
+
 
 ![image-20200618173234347](Docker.assets/image-20200618173234347.png)
 
@@ -2012,7 +2012,13 @@ docker images
 
 在主机挂载路径下，也同样生成
 
-### 多个容器数据共享
+
+
+
+
+
+
+#### exercise2：多个容器数据共享
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
