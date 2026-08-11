@@ -1953,44 +1953,32 @@ docker run -d -p 3310:3306 -v /data/docker_volumedata/mysql_exercise1/conf:/etc/
 
 
 
+#### exercise2：多个容器数据共享
 
+使用Dockerfile技术，构建docker镜像的文件
 
+##### (1) 在宿主机中生成一个Dockerfile文件
 
+Dockerfile文件中指令都是大写的，这里的每个命令可以理解为镜像的一层，VOLUME 含义是在创建镜像的时候就挂载出来
 
-
-
-
-
-DockerFile使用来构建docker镜像的文件
-
-![image-20200618211547398](Docker.assets/image-20200618211547398.png)
+`/data/docker_volumedata/centos_exercise/dockerfile1`
 
 ```shell
-# 镜像是一层一层的，脚本是一行一行的
-# 指令都是大写的
-# 这里的每个命令可以理解为镜像的一层
-
 FROM centos
 
-VOLUME ["volume01","volume02"] # 再创建镜像的时候就挂载出来
+VOLUME ["volume01","volume02"] 
 
 CMD echo "---end---"
 CMD /bin/bash
-
 ```
 
-![image-20200618211023834](Docker.assets/image-20200618211023834.png)
+![image-20260812070720471](images/image-20260812070720471.png)
 
->
-
-
-
-![image-20200618211318410](Docker.assets/image-20200618211318410.png)
+##### (2) 在docker中使用build部署
 
 ```shell
-cat dockerfile1
-
-docker build -f dockerfile1 -t padaxing/centos:1.0 .  # 最后的点很重要 镜像名不能有/
+## 注意：最后的点很重要 镜像名不能有/
+docker build -f dockerfile1 -t duzxlin/centos:1.0 .  
 ```
 
 ![image-20200618212936481](Docker.assets/image-20200618212936481.png)
@@ -2000,6 +1988,10 @@ docker images
 ```
 
 ![image-20200618213310752](Docker.assets/image-20200618213310752.png)
+
+##### (3) 
+
+##### (4) 
 
 启动生成的镜像
 
@@ -2025,7 +2017,7 @@ docker images
 
 
 
-#### exercise2：多个容器数据共享
+
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
