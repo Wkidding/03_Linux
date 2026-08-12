@@ -2175,7 +2175,7 @@ Docker镜像逐渐成为企业的交付标准，必须掌握！
 
 ![æ¥çæºå¾å](http://www.yunweipai.com/wp-content/uploads/2016/09/171.jpg)
 
-### 
+ 
 
 ```shell
 FROM # 基础镜像 比如centos
