@@ -2086,11 +2086,13 @@ docker exec -it docker03 /bin/bash
 
 ![image-20260813064533307](images/image-20260813064533307.png)
 
-(4) 查看宿主机和 docker01/docker01/docker03  的数据卷信息
+##### (4) 查看宿主机和 docker01/docker01/docker03  的数据卷信息
 
 验证，宿主机中挂载 docker01/docker01/docker03  的数据卷volume01中都有`testfile_docker01.c`,`testfile_docker03.c`
 
-卷信息
+###### 查看docker01/docker01/docker03 的挂载卷信息
+
+**结论**： 由于三个容器共享`volume01`的挂载卷，因此三个容器的挂载卷映射在主机中都是同一个卷，且内容一致
 
 ```shell
 docker inspect docker01
@@ -2104,9 +2106,9 @@ docker inspect docker03
 
 ![image-20260813065534402](images/image-20260813065534402.png)
 
-宿主机
+###### 查看宿主机中的挂载卷内容
 
-
+![image-20260813070430523](images/image-20260813070430523.png)
 
 ##### (4) 删除docker01，保留docker02，docker03
 
