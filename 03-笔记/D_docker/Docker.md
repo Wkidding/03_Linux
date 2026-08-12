@@ -2072,7 +2072,9 @@ docker exec -it docker03 /bin/bash
 
 验证，在docker01下加一个数据，在docker02下也会出现
 
+![image-20260813063823851](images/image-20260813063823851.png)
 
+![image-20260813064000886](images/image-20260813064000886.png)
 
 ##### (3) docker03也继承docker01的volumes
 
