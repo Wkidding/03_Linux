@@ -2086,6 +2086,28 @@ docker exec -it docker03 /bin/bash
 
 ![image-20260813064533307](images/image-20260813064533307.png)
 
+(4) 查看宿主机和 docker01/docker01/docker03  的数据卷信息
+
+验证，宿主机中挂载 docker01/docker01/docker03  的数据卷volume01中都有`testfile_docker01.c`,`testfile_docker03.c`
+
+卷信息
+
+```shell
+docker inspect docker01
+docker inspect docker02
+docker inspect docker03
+```
+
+![image-20260813065435110](images/image-20260813065435110.png)
+
+![image-20260813065506696](images/image-20260813065506696.png)
+
+![image-20260813065534402](images/image-20260813065534402.png)
+
+宿主机
+
+
+
 ##### (4) 删除docker01，保留docker02，docker03
 
 验证，此时，volume01/volum02中的数据依然存在
