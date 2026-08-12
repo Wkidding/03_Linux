@@ -2110,57 +2110,36 @@ docker inspect docker03
 
 ![image-20260813070430523](images/image-20260813070430523.png)
 
-##### (4) 删除docker01，保留docker02，docker03
+##### (5) 删除docker01，保留docker02，docker03
 
-验证，此时，volume01/volum02中的数据依然存在
+验证，此时，`volume01/volum02`中的数据依然存在
 
+```shell
+## 删除docker01 
+docker rm -f docker01
 
+## 分别登录docker02/docker03 查看volume01中的数据是否还存在
+dcoker exec -it docker02 /bin/bash
+dcoker exec -it docker03 /bin/bash
+```
+
+![image-20260813070836568](images/image-20260813070836568.png)
 
 ##### (5) 删除docker02，保留docker03
 
-验证，此时，volume01/volum02中的数据依然存在
+验证，此时，`volume01/volum02`中的数据依然存在
 
 
 
 ##### (6) 删除docker03
 
-验证，此时，容器中volume01/volum02中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在
+验证，此时，容器中`volume01/volum02`中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在
 
 
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
-看一下有啥images
 
-启动docker01，用之前建的padaxing/centos 1.0  镜像
-
-![image-20200621170429658](Docker.assets/image-20200621170429658.png)
-
-
-
-当前这个ctrl+p+q不停止退出
-
-![image-20200621170540593](Docker.assets/image-20200621170540593.png)
-
-依次启动docker02、docker03
-
-docker02继承docker01的volumes
-
-可以验证，在docker01下加一个数据，在docker02下也会出现
-
-![image-20200621171513650](Docker.assets/image-20200621171513650.png)
-
-创建docker03，同样继承docker01
-
-```shell
-docker run -it --name docker03 --volumes-from docker01 padaxing/centos:1.0
-```
-
-![image-20200621172333639](Docker.assets/image-20200621172333639.png)
-
-在docker03的volume01下建立文件，在docker01的volume01下同样也有
-
-即通过--volumes-from 可以实现不同容器间的数据共享
 
 删除docker01，数据还在
 
