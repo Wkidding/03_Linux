@@ -2078,9 +2078,13 @@ docker exec -it docker03 /bin/bash
 
 ##### (3) docker03也继承docker01的volumes
 
-验证，在docker03的volume01下建立文件，在docker01的volume01下同样也有
+验证，在docker03的`volume01`下建立文件，在docker02/docker01的`volume01`下同样也有
 
+![image-20260813064300444](images/image-20260813064300444.png)
 
+![image-20260813064402097](images/image-20260813064402097.png)
+
+![image-20260813064533307](images/image-20260813064533307.png)
 
 ##### (4) 删除docker01，保留docker02，docker03
 
