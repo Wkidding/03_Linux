@@ -2057,21 +2057,31 @@ docker run -d -it --name docker03 --volumes-from docker03 duzxlin/centos:1.0
 
 验证，在docker01下加一个数据，在docker02下也会出现
 
+
+
 ##### (3) docker03也继承docker01的volumes
 
 验证，在docker03的volume01下建立文件，在docker01的volume01下同样也有
+
+
 
 ##### (4) 删除docker01，保留docker02，docker03
 
 验证，此时，volume01/volum02中的数据依然存在
 
+
+
 ##### (5) 删除docker02，保留docker03
 
 验证，此时，volume01/volum02中的数据依然存在
 
+
+
 ##### (6) 删除docker03
 
-验证，此时，容器中volume01/volum02中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在。
+验证，此时，容器中volume01/volum02中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在
+
+
 
 ![image-20200621165403842](Docker.assets/image-20200621165403842.png)
 
