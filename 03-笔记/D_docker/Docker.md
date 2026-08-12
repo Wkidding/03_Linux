@@ -2049,9 +2049,24 @@ docker imspect ec4d121e1b18
 docker images
 ## 启动docker01，用之前建的padaxing/centos 1.0 镜像
 docker run -d -it --name docker01 duzxlin/centos:1.0 
-docker run -d -it --name docker02 --volumes-from docker02 duzxlin/centos:1.0
-docker run -d -it --name docker03 --volumes-from docker03 duzxlin/centos:1.0
+docker run -d -it --name docker02 --volumes-from docker01 duzxlin/centos:1.0
+docker run -d -it --name docker03 --volumes-from docker01 duzxlin/centos:1.0
+
+## 依次登录三个容器，验证三个容器中的挂载卷中均无内容
+docker exec -it docker01 /bin/bash
+docker exec -it docker02 /bin/bash
+docker exec -it docker03 /bin/bash
 ```
+
+![image-20260813062727370](images/image-20260813062727370.png)
+
+![image-20260813062739908](images/image-20260813062739908.png)
+
+![image-20260813063105771](images/image-20260813063105771.png)
+
+![image-20260813063215907](images/image-20260813063215907.png)
+
+![image-20260813063309638](images/image-20260813063309638.png)
 
 ##### (2) docker02继承docker01的volumes
 
