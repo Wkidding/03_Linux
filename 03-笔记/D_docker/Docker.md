@@ -2125,31 +2125,25 @@ dcoker exec -it docker03 /bin/bash
 
 ![image-20260813070836568](images/image-20260813070836568.png)
 
-##### (5) 删除docker02，保留docker03
+##### (6) 删除docker02，保留docker03
 
 验证，此时，`volume01/volum02`中的数据依然存在
 
+```shell
+## 删除docker01 
+docker rm -f docker02
 
+## 登录docker03 查看volume01中的数据是否还存在
+dcoker exec -it docker03 /bin/bash
+```
 
-##### (6) 删除docker03
+![image-20260813071358103](images/image-20260813071358103.png)
+
+##### (7) 删除docker03
 
 验证，此时，容器中`volume01/volum02`中的数据无了，但由于之前已经同步到了本地，因此本地数据依然存在
 
-
-
-![image-20200621165403842](Docker.assets/image-20200621165403842.png)
-
-
-
-删除docker01，数据还在
-
-```shell
-docker rm -f 
-```
-
-![image-20200621172830779](Docker.assets/image-20200621172830779.png)
-
-可以看到，删除docker01，进入docker02，数据依然在
+![image-20260813071716206](images/image-20260813071716206.png)
 
 
 
