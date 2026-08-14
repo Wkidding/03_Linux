@@ -2214,12 +2214,17 @@ FROM ubuntu:22.04
 | **STOPSIGNAL**           | 设置发送给容器退出的系统信号（默认 SIGTERM）      | **“告诉容器怎么优雅退出”** — 比如换成 SIGQUIT，让进程有清理机会。 |
 | **ONBUILD**              | 当该镜像被其他 Dockerfile `FROM` 时触发的指令     | **“延迟执行的祖传秘方”** — 现在不执行，等儿子镜像构建时才执行，适合做基础框架。 |
 
-```shell
+```dockerfile
 ##AS <name>：为构建阶段命名，用于多阶段构建
 ## 一个 Dockerfile 可以有多个 FROM 用于多阶段构建
 FROM <image>[:<tag>] [AS <name>]
 
-
+## 在镜像构建过程中执行命令，每条 RUN 都会创建一个新的镜像层。
+## 两种格式：
+## 1、Shell 格式：（默认使用 /bin/sh -c）
+RUN <command>
+## 2、Exec 格式：
+RUN ["executable", "param1", "param2"]
 ```
 
 
