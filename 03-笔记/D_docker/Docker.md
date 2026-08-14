@@ -2221,10 +2221,14 @@ FROM <image>[:<tag>] [AS <name>]
 
 ## 在镜像构建过程中执行命令，每条 RUN 都会创建一个新的镜像层。
 ## 两种格式：
-## 1、Shell 格式：（默认使用 /bin/sh -c）
-RUN <command>
-## 2、Exec 格式：
-RUN ["executable", "param1", "param2"]
+## 1、Shell 格式：RUN <command>（默认使用 /bin/sh -c）
+RUN yum -y install wget
+# 合并多条命令，减少镜像层数
+RUN yum -y install gcc make && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+## 2、Exec 格式： RUN ["executable", "param1", "param2"]
+RUN ["yum", "-y", "install", "wget"]
 ```
 
 
