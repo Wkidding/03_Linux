@@ -2218,17 +2218,31 @@ FROM ubuntu:22.04
 ##AS <name>：为构建阶段命名，用于多阶段构建
 ## 一个 Dockerfile 可以有多个 FROM 用于多阶段构建
 FROM <image>[:<tag>] [AS <name>]
+FROM ubuntu:22.04
+FROM python:3.9-alpine AS builder
+FROM nginx:1.23
 
 ## 在镜像构建过程中执行命令，每条 RUN 都会创建一个新的镜像层。
-## 两种格式：
-## 1、Shell 格式：RUN <command>（默认使用 /bin/sh -c）
+## RUN两种格式：
+## 1、Shell 格式：
+RUN <command>（默认使用 /bin/sh -c）
 RUN yum -y install wget
 # 合并多条命令，减少镜像层数
 RUN yum -y install gcc make && \
     yum clean all && \
     rm -rf /var/cache/yum
-## 2、Exec 格式： RUN ["executable", "param1", "param2"]
+## 2、Exec 格式： 
+RUN ["executable", "param1", "param2"]
 RUN ["yum", "-y", "install", "wget"]
+
+
+## COPY — 复制文件，将文件或目录从构建上下文复制到镜像中。保留文件元数据（权限等）
+COPY <src> <dest>
+## <src> 必须是相对于 Dockerfile 所在目录的路径
+## <dest> 可以是绝对路径或相对于 WORKDIR 的路径
+COPY . /app
+COPY package.json /app/
+COPY --from=builder /app/dist /app/dist   # 多阶段构建中从其他阶段复制
 ```
 
 
