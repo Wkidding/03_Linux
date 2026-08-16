@@ -2351,7 +2351,7 @@ STOPSIGNAL SIGTERM
 
 #### exercise1: 构建自己的centos
 
-1、验证在官方的centos中，下列这些命令是否都存在
+##### 1、验证在官方的centos中，下列这些命令是否都存在
 
 ```shell
 # 官方默认centos
@@ -2363,7 +2363,7 @@ ifconfig        # 官方默认没有ifconfig命令
 
 ![image-20260817064635242](images/image-20260817064635242.png)
 
-2、 创建mydockerfile-centos
+##### 2、 创建mydockerfile-centos
 
 Docker Hub中99%的镜像都是从FROM scratch开始的
 
@@ -2377,8 +2377,8 @@ cd /data
 # 创建一个目录，之后的东西都保存到这里
 mkdir my_docker_images
 cd my_docker_images/
-# 创建一个dockerfile，名字叫 mydockerfile_centos
-vim mydockerfile_centos
+# 创建一个dockerfile，名字叫 dockerfile_centos
+vim dockerfile_centos
 ```
 
 内容
@@ -2390,6 +2390,11 @@ FROM centos:7
 ENV MYPATH /usr/local
 WORKDIR $MYPATH
 
+# 需要将源替换为阿里云源（适用于 CentOS 7）
+RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak && \
+    curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo && \
+    yum clean all && \
+    yum makecache
 RUN yum -y install vim
 RUN yum -y install net-tools
 
@@ -2400,13 +2405,23 @@ CMD echo "---end---"
 CMD /bin/bash
 ```
 
-![image-20260817065509189](images/image-20260817065509189.png)
+![image-20260817070119496](images/image-20260817070119496.png)
 
-3、过这个这个文件创建镜像
+##### 3、使用dockerfile文件创建镜像
 
 ```shell
-docker build -f dockerfile-centos -t mycentos:0.1 .
+docker build -f dockerfile_centos -t mycentos:0.1 .
 ```
+
+构建中
+
+![image-20260817070205768](images/image-20260817070205768.png)
+
+构建完成
+
+
+
+
 
 ![image-20200621190219978](Docker.assets/image-20200621190219978.png)
 
