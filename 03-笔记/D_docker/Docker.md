@@ -2323,6 +2323,14 @@ CMD ["--port", "8080"]
 ## 实际运行效果
 docker run myapp              # 执行 python app.py --port 8080
 docker run myapp --port 9090  # 执行 python app.py --port 9090
+
+
+
+## LABEL — 添加元数据 ： 为镜像添加键值对元数据。
+## LABEL <key>=<value>
+LABEL version="1.0.1"
+LABEL maintainer="admin@example.com"
+LABEL description="This is a custom CentOS 7 image"
 ```
 
 
