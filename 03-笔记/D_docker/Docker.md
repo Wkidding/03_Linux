@@ -2309,6 +2309,20 @@ USER appuser
 CMD ["nginx", "-g", "daemon off;"]
 CMD node server.js
 ## 重要：CMD 可被 docker run 后面的命令覆盖。
+
+
+## ENTRYPOINT — 入口点:指定容器启动时始终执行的可执行文件。
+## 两种格式：
+## (1) Exec 格式（推荐） ：ENTRYPOINT ["executable", "param1"]
+## (2) Shell 格式：ENTRYPOINT command param1 param2
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+## 与 CMD 的关键区别：ENTRYPOINT 定义的命令不会被 docker run 的参数覆盖，而是接收这些参数。
+## ENTRYPOINT + CMD 组合使用 : ENTRYPOINT 定义固定命令，CMD 提供默认参数。
+ENTRYPOINT ["python", "app.py"]
+CMD ["--port", "8080"]
+## 实际运行效果
+docker run myapp              # 执行 python app.py --port 8080
+docker run myapp --port 9090  # 执行 python app.py --port 9090
 ```
 
 
