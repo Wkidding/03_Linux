@@ -2259,6 +2259,15 @@ WORKDIR /app
 WORKDIR src        # 实际为 /app/src
 WORKDIR /var/log   # 切换到绝对路径
 
+
+## 设置环境变量，构建期间和容器运行时均可用。
+##  ENV <key>=<value>
+## 后续指令可通过 $变量名 引用。
+ENV APP_HOME=/app
+ENV NODE_VERSION=18.17.0
+ENV PATH=$PATH:$APP_HOME/bin
+
+
 ```
 
 
