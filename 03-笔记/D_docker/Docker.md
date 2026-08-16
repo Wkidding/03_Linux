@@ -2442,22 +2442,55 @@ ifconfig
 
 ##### 5、通过`docker history [image_id]`查看docker构建历史
 
-![image-20200621192103460](Docker.assets/image-20200621192103460.png)
+可以看到当前这个镜像是通过dockerfile中的步骤一步一步构建起来的
 
-可以看到当前这个镜像是怎么一步一步构建起来的
+![image-20260817072021822](images/image-20260817072021822.png)
 
-我们平时拿到一个镜像也可以通过这个方法研究一下他是怎么做的
+
 
 #### CMD与ENTRYPOINT
 
 ```shell
+## 测试CMD命令
+## 编写 dockerfile 文件
+vim dockerfile-cmd-test
+## 内容如下
 FROM centos
-CMD ["ls","-a"] # 启动centos展示目录
+CMD ["ls","-a"]
+
+## 构建镜像
+docker build -f dockerfile-cmd-test -t cmdtest .
+
+## docker run运行，发现我们的ls -a 命令生效
+[root@kuangshen dockerfile]# docker run dd8e4401d72f
+.
+.
+.dockerenv
+bin
+dev
+etc
+home
+lib
+lib64
+
+## 此时追加一个命令 -l
+[root@kuangshen dockerfile]# docker run dd8e4401d72f -l
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:349: starting container process caused "exec: '\"-l\"': executable file not found in $PATH": unknown.
+## 追加命令之后，预期执行的命令是 ls -al
+## 但报错，这是因为在使用 CMD命令时，如果有追加的命令，则追加的命令会替换原有命令，在本例中，-l 替换了 CMD ["ls","-a"] 命令，-l 不是命令，所以报错！
 ```
 
-![image-20200622075427103](Docker.assets/image-20200622075427103.png)
+![image-20260817072838168](images/image-20260817072838168.png)
+
+![image-20260817073004857](images/image-20260817073004857.png)
+
+
+
+
 
 测试ENTRYPOINT
+
+
 
 ![image-20200622075653789](Docker.assets/image-20200622075653789.png)
 
