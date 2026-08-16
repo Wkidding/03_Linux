@@ -2291,6 +2291,13 @@ EXPOSE 8080/tcp
 ## VOLUME — 创建挂载点： 为容器创建挂载点或声明卷。
 VOLUME /data
 VOLUME ["/var/log", "/var/lib/mysql"]
+
+ 
+## USER — 切换用户 ：切换执行后续命令的用户和用户组。
+## USER <user>[:<group>]
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+USER appuser
+## 注意：用户必须已通过 RUN 命令预先创建。
 ```
 
 
