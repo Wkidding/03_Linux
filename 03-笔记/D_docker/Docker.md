@@ -2249,6 +2249,16 @@ COPY --from=builder /app/dist /app/dist   # 多阶段构建中从其他阶段复
 ## 2)自动解压 tar 文件
 ADD https://example.com/file.tar.gz /tmp/
 ADD app.tar.gz /app/
+
+
+## 设置后续指令（RUN、CMD、ENTRYPOINT、COPY、ADD）的工作目录。
+## 如果目录不存在会自动创建
+## 建议使用绝对路径，避免使用 RUN cd
+## 可多次使用，路径支持相对路径（相对于上一个 WORKDIR）
+WORKDIR /app
+WORKDIR src        # 实际为 /app/src
+WORKDIR /var/log   # 切换到绝对路径
+
 ```
 
 
