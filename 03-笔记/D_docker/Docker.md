@@ -2286,6 +2286,11 @@ EXPOSE 80
 EXPOSE 443/tcp
 EXPOSE 8080/tcp
 ## 实际端口映射仍需在 docker run 时用 -p 指定。
+
+
+## VOLUME — 创建挂载点： 为容器创建挂载点或声明卷。
+VOLUME /data
+VOLUME ["/var/log", "/var/lib/mysql"]
 ```
 
 
