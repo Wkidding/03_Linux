@@ -2432,11 +2432,15 @@ vim
 ifconfig
 ```
 
-![image-20200621190812481](Docker.assets/image-20200621190812481.png)
+![image-20260817071127757](images/image-20260817071127757.png)
 
-这时可以看到这些功能都有了
+![image-20260817071043863](images/image-20260817071043863.png)
 
-可以通过查看docker构建历史
+![image-20260817071150605](images/image-20260817071150605.png)
+
+
+
+##### 5、通过`docker history [image_id]`查看docker构建历史
 
 ![image-20200621192103460](Docker.assets/image-20200621192103460.png)
 
