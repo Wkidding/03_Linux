@@ -2400,16 +2400,7 @@ CMD echo "---end---"
 CMD /bin/bash
 ```
 
-![](Docker.assets/image-20200621185539523.png)
 
-ESC, shif + : 输入wq保存并退出
-
-如果写错了需要修改、
-
-```shell
-vim mydockerfile-centos
-# 进入之后按i或者INSERT键即可修改
-```
 
 
 
