@@ -2377,8 +2377,8 @@ cd /data
 # 创建一个目录，之后的东西都保存到这里
 mkdir my_docker_images
 cd my_docker_images/
-# 创建一个dockerfile，名字叫 mydockerfile-centos
-vim mydockerfile-centos
+# 创建一个dockerfile，名字叫 mydockerfile_centos
+vim mydockerfile_centos
 ```
 
 内容
@@ -2400,11 +2400,9 @@ CMD echo "---end---"
 CMD /bin/bash
 ```
 
+![image-20260817065509189](images/image-20260817065509189.png)
 
-
-
-
-下面通过这个这个文件创建镜像
+3、过这个这个文件创建镜像
 
 ```shell
 docker build -f dockerfile-centos -t mycentos:0.1 .
