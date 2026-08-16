@@ -2243,6 +2243,12 @@ COPY <src> <dest>
 COPY . /app
 COPY package.json /app/
 COPY --from=builder /app/dist /app/dist   # 多阶段构建中从其他阶段复制
+
+## 类似于 COPY，但额外支持：
+## 1)远程 URL 作为源
+## 2)自动解压 tar 文件
+ADD https://example.com/file.tar.gz /tmp/
+ADD app.tar.gz /app/
 ```
 
 
