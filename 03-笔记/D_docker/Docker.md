@@ -2417,21 +2417,13 @@ docker build -f dockerfile_centos -t mycentos:0.1 .
 
 ![image-20260817070205768](images/image-20260817070205768.png)
 
-构建完成
+构建完成，名称：mycentos ,tag 0.1
 
+![image-20260817070329913](images/image-20260817070329913.png)
 
+![image-20260817070531251](images/image-20260817070531251.png)
 
-
-
-![image-20200621190219978](Docker.assets/image-20200621190219978.png)
-
-依次执行命令
-
-![image-20200621190439448](Docker.assets/image-20200621190439448.png)
-
-最终返回Successfully表示成功
-
-![image-20200621190524848](Docker.assets/image-20200621190524848.png)
+##### 4、运行自己的centos
 
 ```shell
 docker run -it mycentos:0.1 # 版本号必须写，不然他会去找最新的
