@@ -2349,9 +2349,21 @@ STOPSIGNAL SIGTERM
 
 
 
-
-
 #### exercise1: 构建自己的centos
+
+1、验证在官方的centos中，下列这些命令是否都存在
+
+```shell
+# 官方默认centos
+docker run -it centos
+pwd             # 官方默认有pwd命令
+vim             # 官方默认没有vim命令
+ifconfig        # 官方默认没有ifconfig命令
+```
+
+![image-20260817064635242](images/image-20260817064635242.png)
+
+2、 创建mydockerfile-centos
 
 Docker Hub中99%的镜像都是从FROM scratch开始的
 
@@ -2361,31 +2373,33 @@ Docker Hub中99%的镜像都是从FROM scratch开始的
 # 创建一个自己的centos
 
 # 进入home目录
-cd /home
-
+cd /data 
 # 创建一个目录，之后的东西都保存到这里
-mkdir dockerfile
-# 进入这个目录
-cd dockerfile/
-# 创建一个dockerfile，名字叫mydockerfile
+mkdir my_docker_images
+cd my_docker_images/
+# 创建一个dockerfile，名字叫 mydockerfile-centos
 vim mydockerfile-centos
-
-
 ```
 
-xshell新开一个界面
+内容
 
 ```shell
-# 官方默认centos
-docker run -it centos
-pwd # 官方默认有pwd命令
-vim # 官方默认没有vim命令
-ifconfig # 官方默认没有ifconfig命令
+
 ```
 
-![image-20200621184333206](Docker.assets/image-20200621184333206.png)
 
-回到mydockerfile
+
+
+
+
+
+
+
+
+
+
+
+
 
 ![image-20200621184847524](Docker.assets/image-20200621184847524.png)
 
