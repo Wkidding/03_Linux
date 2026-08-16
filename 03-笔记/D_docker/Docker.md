@@ -2347,7 +2347,85 @@ SHELL ["/bin/bash", "-c"]
 STOPSIGNAL SIGTERM
 ```
 
+#### CMD与ENTRYPOINT
 
+```shell
+## 测试CMD命令
+## 编写 dockerfile 文件
+vim dockerfile-cmd-test
+## 内容如下
+FROM centos
+CMD ["ls","-a"]
+
+## 构建镜像
+docker build -f dockerfile-cmd-test -t cmdtest .
+
+## docker run运行，发现我们的ls -a 命令生效
+[root@kuangshen dockerfile]# docker run dd8e4401d72f
+.
+.
+.dockerenv
+bin
+dev
+etc
+home
+lib
+lib64
+
+## 此时追加一个命令 -l
+[root@kuangshen dockerfile]# docker run dd8e4401d72f -l
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:349: starting container process caused "exec: '\"-l\"': executable file not found in $PATH": unknown.
+## 追加命令之后，预期执行的命令是 ls -al
+## 但报错，这是因为在使用 CMD命令时，如果有追加的命令，则追加的命令会替换原有命令，在本例中，-l 替换了 CMD ["ls","-a"] 命令，-l 不是命令，所以报错！
+```
+
+![image-20260817072838168](images/image-20260817072838168.png)
+
+![image-20260817073004857](images/image-20260817073004857.png)
+
+
+
+
+
+测试ENTRYPOINT
+
+```shell
+## 测试ENTRYPOINT命令
+vim dockerfile-cmd-entrypoint
+## 内容同上述CMD测试一致
+FROM centos:7
+ENTRYPOINT ["ls","-a"]
+
+## 构建镜像
+[root@devbase2]:/data/my_docker_images# vim dockerfile-cmd-entrypoint
+[root@devbase2]:/data/my_docker_images# cat dockerfile-cmd-entrypoint
+FROM centos:7
+ENTRYPOINT ["ls","-a"]
+[root@devbase2]:/data/my_docker_images# docker build -f dockerfile-cmd-entrypoint -t entrypoint-test .
+[+] Building 0.2s (5/5) FINISHED                                                                                                         docker:default
+ => [internal] load build definition from dockerfile-cmd-entrypoint                                                                                0.0s
+ => => transferring dockerfile: 89B                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/centos:7                                                                                        0.0s
+ => [internal] load .dockerignore                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                    0.0s
+ => CACHED [1/1] FROM docker.io/library/centos:7                                                                                                   0.0s
+ => exporting to image                                                                                                                             0.0s
+ => => exporting layers                                                                                                                            0.0s
+ => => writing image sha256:6beb6f712117995cd7daa5bf7681d3cf6364b87aa2b4b99fe191edb74d398924                                                       0.0s
+ => => naming to docker.io/library/entrypoint-test                                                                                                 0.0s
+[root@devbase2]:/data/my_docker_images#
+
+```
+
+![image-20260817073500116](images/image-20260817073500116.png)
+
+![image-20260817073511158](images/image-20260817073511158.png)
+
+使用ENTRYPOINT命令时，run的时候可以直接加命令。在本例中，`-l` 直接拼接到 `ls -a`命令后面，最终命令是 `ls -al`，因此正确z执行，最终结果是打印文件夹中的详细信息。
+
+![image-20260817073522400](images/image-20260817073522400.png)
+
+---
 
 #### exercise1: 构建自己的centos
 
@@ -2446,91 +2524,47 @@ ifconfig
 
 ![image-20260817072021822](images/image-20260817072021822.png)
 
-
-
-#### CMD与ENTRYPOINT
-
-```shell
-## 测试CMD命令
-## 编写 dockerfile 文件
-vim dockerfile-cmd-test
-## 内容如下
-FROM centos
-CMD ["ls","-a"]
-
-## 构建镜像
-docker build -f dockerfile-cmd-test -t cmdtest .
-
-## docker run运行，发现我们的ls -a 命令生效
-[root@kuangshen dockerfile]# docker run dd8e4401d72f
-.
-.
-.dockerenv
-bin
-dev
-etc
-home
-lib
-lib64
-
-## 此时追加一个命令 -l
-[root@kuangshen dockerfile]# docker run dd8e4401d72f -l
-docker: Error response from daemon: OCI runtime create failed: container_linux.go:349: starting container process caused "exec: '\"-l\"': executable file not found in $PATH": unknown.
-## 追加命令之后，预期执行的命令是 ls -al
-## 但报错，这是因为在使用 CMD命令时，如果有追加的命令，则追加的命令会替换原有命令，在本例中，-l 替换了 CMD ["ls","-a"] 命令，-l 不是命令，所以报错！
-```
-
-![image-20260817072838168](images/image-20260817072838168.png)
-
-![image-20260817073004857](images/image-20260817073004857.png)
-
-
-
-
-
-测试ENTRYPOINT
-
-```shell
-## 测试ENTRYPOINT命令
-vim dockerfile-cmd-entrypoint
-## 内容同上述CMD测试一致
-FROM centos:7
-ENTRYPOINT ["ls","-a"]
-
-## 构建镜像
-[root@devbase2]:/data/my_docker_images# vim dockerfile-cmd-entrypoint
-[root@devbase2]:/data/my_docker_images# cat dockerfile-cmd-entrypoint
-FROM centos:7
-ENTRYPOINT ["ls","-a"]
-[root@devbase2]:/data/my_docker_images# docker build -f dockerfile-cmd-entrypoint -t entrypoint-test .
-[+] Building 0.2s (5/5) FINISHED                                                                                                         docker:default
- => [internal] load build definition from dockerfile-cmd-entrypoint                                                                                0.0s
- => => transferring dockerfile: 89B                                                                                                                0.0s
- => [internal] load metadata for docker.io/library/centos:7                                                                                        0.0s
- => [internal] load .dockerignore                                                                                                                  0.0s
- => => transferring context: 2B                                                                                                                    0.0s
- => CACHED [1/1] FROM docker.io/library/centos:7                                                                                                   0.0s
- => exporting to image                                                                                                                             0.0s
- => => exporting layers                                                                                                                            0.0s
- => => writing image sha256:6beb6f712117995cd7daa5bf7681d3cf6364b87aa2b4b99fe191edb74d398924                                                       0.0s
- => => naming to docker.io/library/entrypoint-test                                                                                                 0.0s
-[root@devbase2]:/data/my_docker_images#
-
-```
-
-![image-20260817073500116](images/image-20260817073500116.png)
-
-![image-20260817073511158](images/image-20260817073511158.png)
-
-使用ENTRYPOINT命令时，run的时候可以直接加命令。在本例中，`-l` 直接拼接到 `ls -a`命令后面，最终命令是 `ls -al`，因此正确z执行，最终结果是打印文件夹中的详细信息。
-
-![image-20260817073522400](images/image-20260817073522400.png)
-
 ---
 
 #### exercise2: Tomcat镜像
 
+##### 1、准备镜像文件 tomcat 压缩包，jdk的压缩包
 
+
+
+##### 2、编写dockerfile文件，官方命名`Dockerfile`，build 会自动寻找这个文件，就不需要-f指定了
+
+```dockerfile
+FROM centos:7
+
+COPY readme.txt /usr/local/readme.txt
+
+ADD jdk-8u11-linux-x64.tar.gz /usr/local/
+ADD apache-tomcat-9.0.22.tar.gz /usr/local/
+
+RUN yum -y install vim
+
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+
+ENV JAVA_HOME /usr/local/jdk1.8.0_11
+ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.22
+ENV CATALINA_BASH /usr/local/apache-tomcat-9.0.22
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin
+
+EXPOSE 8080
+
+CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /url/local/apache-tomcat-9.0.22/bin/logs/catalina.out
+```
+
+##### 3、构建镜像
+
+4、启动惊醒
+
+5、访问测试
+
+6、发布项目(由于做了卷挂载，可以直接在本地编写项目发布)
 
 
 
