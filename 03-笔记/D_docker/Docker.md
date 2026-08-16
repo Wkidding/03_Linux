@@ -2384,29 +2384,8 @@ vim mydockerfile-centos
 内容
 
 ```shell
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![image-20200621184847524](Docker.assets/image-20200621184847524.png)
-
-```shell
-# 下面给官方centos加上自定义的内容
-FROM centos
-MAINTAINER padaxing<010301200@hai.com>
+# 给官方centos加上自定义的内容
+FROM centos:7
 
 ENV MYPATH /usr/local
 WORKDIR $MYPATH
@@ -2421,7 +2400,7 @@ CMD echo "---end---"
 CMD /bin/bash
 ```
 
-![image-20200621185539523](Docker.assets/image-20200621185539523.png)
+![](Docker.assets/image-20200621185539523.png)
 
 ESC, shif + : 输入wq保存并退出
 
