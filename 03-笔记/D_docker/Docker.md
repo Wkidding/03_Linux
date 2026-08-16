@@ -2490,15 +2490,41 @@ docker: Error response from daemon: OCI runtime create failed: container_linux.g
 
 测试ENTRYPOINT
 
+```shell
+## 测试ENTRYPOINT命令
+vim dockerfile-cmd-entrypoint
+## 内容同上述CMD测试一致
+FROM centos:7
+ENTRYPOINT ["ls","-a"]
 
+## 构建镜像
+[root@devbase2]:/data/my_docker_images# vim dockerfile-cmd-entrypoint
+[root@devbase2]:/data/my_docker_images# cat dockerfile-cmd-entrypoint
+FROM centos:7
+ENTRYPOINT ["ls","-a"]
+[root@devbase2]:/data/my_docker_images# docker build -f dockerfile-cmd-entrypoint -t entrypoint-test .
+[+] Building 0.2s (5/5) FINISHED                                                                                                         docker:default
+ => [internal] load build definition from dockerfile-cmd-entrypoint                                                                                0.0s
+ => => transferring dockerfile: 89B                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/centos:7                                                                                        0.0s
+ => [internal] load .dockerignore                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                    0.0s
+ => CACHED [1/1] FROM docker.io/library/centos:7                                                                                                   0.0s
+ => exporting to image                                                                                                                             0.0s
+ => => exporting layers                                                                                                                            0.0s
+ => => writing image sha256:6beb6f712117995cd7daa5bf7681d3cf6364b87aa2b4b99fe191edb74d398924                                                       0.0s
+ => => naming to docker.io/library/entrypoint-test                                                                                                 0.0s
+[root@devbase2]:/data/my_docker_images#
 
-![image-20200622075653789](Docker.assets/image-20200622075653789.png)
+```
 
-run的时候可以直接加命令
+![image-20260817073500116](images/image-20260817073500116.png)
 
-![image-20200622075802180](Docker.assets/image-20200622075802180.png)
+![image-20260817073511158](images/image-20260817073511158.png)
 
-Docker中许多命令都十分相似，我们需要了解他们的区别，最好的方式就是这样对比测试
+使用ENTRYPOINT命令时，run的时候可以直接加命令。在本例中，`-l` 直接拼接到 `ls -a`命令后面，最终命令是 `ls -al`，因此正确z执行，最终结果是打印文件夹中的详细信息。
+
+![image-20260817073522400](images/image-20260817073522400.png)
 
 ---
 
