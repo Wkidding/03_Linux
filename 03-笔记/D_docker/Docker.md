@@ -2298,6 +2298,17 @@ VOLUME ["/var/log", "/var/lib/mysql"]
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 USER appuser
 ## 注意：用户必须已通过 RUN 命令预先创建。
+
+
+
+## CMD — 默认启动命令 ：指定容器启动时默认执行的命令。每个 Dockerfile 只有一个 CMD 生效（最后一个）。
+## 三种格式：
+## (1) Exec 格式（推荐） ：CMD ["executable", "param1", "param2"]
+## (2) Shell 格式：CMD command param1 param2
+## (3) 作为 ENTRYPOINT 参数：CMD ["param1", "param2"]
+CMD ["nginx", "-g", "daemon off;"]
+CMD node server.js
+## 重要：CMD 可被 docker run 后面的命令覆盖。
 ```
 
 
