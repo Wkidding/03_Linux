@@ -2331,6 +2331,20 @@ docker run myapp --port 9090  # 执行 python app.py --port 9090
 LABEL version="1.0.1"
 LABEL maintainer="admin@example.com"
 LABEL description="This is a custom CentOS 7 image"
+
+
+## ONBUILD — 延迟触发器 ： 当该镜像被用作另一个构建过程的基础时，添加触发器指令。
+ONBUILD COPY package.json /app/
+ONBUILD RUN npm install
+## 在本次构建中不执行
+## 当其他镜像 FROM 本镜像时，这些 ONBUILD 指令会在子镜像构建时执行
+
+
+## SHELL — 默认 Shell ：覆盖 Docker 中默认的 shell，用于 RUN、CMD 和 ENTRYPOINT 指令。
+SHELL ["/bin/bash", "-c"]
+
+## STOPSIGNAL — 停止信号：设置发送给容器以退出的系统调用信号。
+STOPSIGNAL SIGTERM
 ```
 
 
