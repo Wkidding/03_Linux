@@ -2268,6 +2268,15 @@ ENV NODE_VERSION=18.17.0
 ENV PATH=$PATH:$APP_HOME/bin
 
 
+## ARG — 构建时变量 ：定义仅在构建过程中有效的变量。
+## ARG <变量名>[=<默认值>]
+ARG NODE_VERSION=20
+ARG ALPINE_VERSION=3.21
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+
+## 构建时可通过 --build-arg 覆盖：
+docker build --build-arg NODE_VERSION=18 -t myapp .
+## 区别 ARG vs ENV：ARG 仅构建时有效，ENV 构建和运行时均有效。
 ```
 
 
