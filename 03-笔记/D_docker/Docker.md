@@ -2277,6 +2277,15 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 ## 构建时可通过 --build-arg 覆盖：
 docker build --build-arg NODE_VERSION=18 -t myapp .
 ## 区别 ARG vs ENV：ARG 仅构建时有效，ENV 构建和运行时均有效。
+
+
+## EXPOSE — 声明端口
+## 声明容器运行时监听的端口（仅文档作用，不实际映射端口）。
+EXPOSE <port> [<port>/<protocol>]
+EXPOSE 80
+EXPOSE 443/tcp
+EXPOSE 8080/tcp
+## 实际端口映射仍需在 docker run 时用 -p 指定。
 ```
 
 
