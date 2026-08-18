@@ -2568,9 +2568,7 @@ CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /url/local/apache-
 
 
 
-## IDEA整合Docker
-
-## Docker 整合Docker
+## 
 
 ## Docker Compose
 
