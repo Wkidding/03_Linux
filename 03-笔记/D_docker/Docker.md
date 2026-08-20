@@ -2616,11 +2616,47 @@ curl localhost:9090
 
 ![image-20260820174342415](images/image-20260820174342415.png)
 
-##### 6、发布项目(由于做了卷挂载，可以直接在本地编写项目发布)
+##### 6、发布项目
+
+由于做了卷挂载，可以直接在本地编写项目发布.
+
+`/data/my_docker_images/duzxlinTomact/test/WEB-INF/web.xml`内容
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+</web-app>
+```
+
+`/data/my_docker_images/duzxlinTomact/test/index.jsp`内容
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>hello, duzxlin</title>
+</head>
+<body>
+Hello world!<br/>
+<% System.out.println("---my test web log!!---"); %>
+</body>
+</html>
+```
+
+![image-20260820181157973](images/image-20260820181157973.png)
 
 
 
-## 
+
+
+## DockerNet
 
 ## Docker Compose
 
