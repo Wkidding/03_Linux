@@ -2530,9 +2530,9 @@ ifconfig
 
 ##### 1、准备镜像文件 tomcat 压缩包，jdk的压缩包
 
+![image-20260820170942558](images/image-20260820170942558.png)
 
-
-##### 2、编写dockerfile文件，官方命名`Dockerfile`，build 会自动寻找这个文件，就不需要-f指定了
+##### 2、编写dockerfile文件，官方命名`Dockerfile`，build 时会自动寻找这个文件，就不需要-f指定了
 
 ```dockerfile
 FROM centos:7
