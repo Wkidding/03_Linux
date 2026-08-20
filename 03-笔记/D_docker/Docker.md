@@ -2598,9 +2598,23 @@ docker run -d -p 9090:8080 --name testduzxlintomact -v /data/my_docker_images/du
 
 ##### 5、访问测试
 
+```shell
+## 进入容器查看解压的jdk\tomcat目录正常
+docker exec -it 09688621b003 /bin/bash
+```
 
+![image-20260820173955303](images/image-20260820173955303.png)
 
+```shell
+## 通过本地方位tomcat服务正常返回
+curl localhost:9090
+```
 
+![image-20260820174230812](images/image-20260820174230812.png)
+
+通过外网访问 IP:9090端口，可以正常访问
+
+![image-20260820174342415](images/image-20260820174342415.png)
 
 ##### 6、发布项目(由于做了卷挂载，可以直接在本地编写项目发布)
 
