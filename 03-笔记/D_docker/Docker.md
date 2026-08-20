@@ -2541,7 +2541,11 @@ COPY readme.txt /usr/local/readme.txt
 
 ADD jdk-8u11-linux-x64.tar.gz /usr/local/
 ADD apache-tomcat-9.0.22.tar.gz /usr/local/
-
+# 需要将源替换为阿里云源（适用于 CentOS 7）
+RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak && \
+    curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo && \
+    yum clean all && \
+    yum makecache
 RUN yum -y install vim
 
 ENV MYPATH /usr/local
@@ -2560,11 +2564,22 @@ CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /url/local/apache-
 
 ##### 3、构建镜像
 
-4、启动惊醒
+```shell
+## 第2步中，如果已经将dockerfile命名为dockerfile，则在进行build的时候，docker会自动找到这个dockerfile，不需要使用-f 指定需要使用的是哪个dockerfile
+docker build -t duzxlintomcat:0.1 .
+```
 
-5、访问测试
 
-6、发布项目(由于做了卷挂载，可以直接在本地编写项目发布)
+
+##### 4、启动镜像
+
+
+
+##### 5、访问测试
+
+
+
+##### 6、发布项目(由于做了卷挂载，可以直接在本地编写项目发布)
 
 
 
