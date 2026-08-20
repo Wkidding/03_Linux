@@ -2532,7 +2532,9 @@ ifconfig
 
 ![image-20260820170942558](images/image-20260820170942558.png)
 
-##### 2、编写dockerfile文件，官方命名`Dockerfile`，build 时会自动寻找这个文件，就不需要-f指定了
+##### 2、编写dockerfile
+
+官方命名为`Dockerfile`，`docker build` 时会自动寻找这个文件，就不需要` -f `指定了
 
 ```dockerfile
 FROM centos:7
@@ -2562,20 +2564,41 @@ EXPOSE 8080
 CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /url/local/apache-tomcat-9.0.22/bin/logs/catalina.out
 ```
 
+![image-20260820172146978](images/image-20260820172146978.png)
+
 ##### 3、构建镜像
 
 ```shell
 ## 第2步中，如果已经将dockerfile命名为dockerfile，则在进行build的时候，docker会自动找到这个dockerfile，不需要使用-f 指定需要使用的是哪个dockerfile
-docker build -t duzxlintomcat:0.1 .
+docker build -t duzxlintomcat .
 ```
 
-
+![image-20260820172524372](images/image-20260820172524372.png)
 
 ##### 4、启动镜像
 
+```shell
+docker images
+```
 
+![image-20260820172553590](images/image-20260820172553590.png)
+
+```shell
+docker run -d -p 9090:8080 --name testduzxlintomact -v /data/my_docker_images/duzxlinTomact/test:/usr/local/apache-tomcat-9.0.22/webapps/test -v /data/my_docker_images/duzxlinTomact/testlogs:/usr/local/apache-tomcat-9.0.22/logs duzxlintomcat
+## 挂载详情 
+## 1、test文件夹挂载
+## /data/my_docker_images/duzxlinTomact/test 为执行测试时，本地挂载的目录
+## /usr/local/apache-tomcat-9.0.22/webapps/test 为执行测试时，容器内部的发布目录
+## 2、tomact日志挂载
+## /data/my_docker_images/duzxlinTomact/testlogs 为执行测试时，本地挂载的tomact 的日志目录
+## /usr/local/apache-tomcat-9.0.22/logs 为执行测试时，容器内部的tomcat 日志目录
+```
+
+![image-20260820173710251](images/image-20260820173710251.png)
 
 ##### 5、访问测试
+
+
 
 
 
